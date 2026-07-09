@@ -21,6 +21,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from checks import CHECKS, run_check
+from scoring import append_history, baseline, evaluate_gate, load_history, summarize
 
 INSTRUCTION_FILES = ["CLAUDE.md", "PLAN_BUILD_MATRIX_RESPONSE_TEMPLATES.md"]
 ENV_FILE = Path(__file__).resolve().parent / ".env"
@@ -140,9 +141,30 @@ def main():
     results["instructions_sha"] = _git_sha(repo_root)
     results["timestamp"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
+    summary = summarize(results)
+    history_path = Path(args.out) / "history.jsonl"
+    base = baseline(load_history(history_path))
+    gate_ok, reasons = evaluate_gate(summary, base)
+    results["summary"] = summary
+    results["gate"] = {"ok": gate_ok, "reasons": reasons, "baseline": base}
+
     run_id = f"{time.strftime('%Y%m%d-%H%M%S')}-{results['instructions_sha']}"
     path = write_results(results, out_dir=args.out, run_id=run_id)
+    append_history(history_path, {
+        "run_id": run_id,
+        "sha": results["instructions_sha"],
+        "timestamp": results["timestamp"],
+        "suite": summary["suite"],
+        "dimensions": summary["dimensions"],
+        "lift": summary["lift"],
+        "gate": gate_ok,
+    })
+
     print(f"wrote {path}")
+    print(f"suite {summary['suite']}, lift {summary['lift']}, gate {'PASS' if gate_ok else 'FAIL'}")
+    for reason in reasons:
+        print(f"  {reason}")
+    raise SystemExit(0 if gate_ok else 1)
 
 
 if __name__ == "__main__":
