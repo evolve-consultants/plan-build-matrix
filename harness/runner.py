@@ -27,6 +27,10 @@ INSTRUCTION_FILES = ["CLAUDE.md", "PLAN_BUILD_MATRIX_RESPONSE_TEMPLATES.md"]
 ENV_FILE = Path(__file__).resolve().parent / ".env"
 PASSTHROUGH_ENV = ["PATH", "ANTHROPIC_API_KEY"]
 TIMEOUT_SECONDS = 300
+MODEL_IDS = {"haiku": "claude-haiku-4-5-20251001", "sonnet": "claude-sonnet-5"}
+MAX_TOKENS = 4096
+RATE_LIMIT_RETRIES = 5
+RATE_LIMIT_WAIT = 60
 
 
 def load_env(path=ENV_FILE):
@@ -62,7 +66,9 @@ def call_claude(prompt, workdir, env, model, session=None, run=subprocess.run):
     proc = run(cmd, cwd=workdir, env=env, capture_output=True, text=True,
                timeout=TIMEOUT_SECONDS)
     if proc.returncode != 0:
-        raise RuntimeError(f"claude exited {proc.returncode}: {proc.stderr}")
+        raise RuntimeError(
+            f"claude exited {proc.returncode}\n"
+            f"stderr: {proc.stderr.strip()}\nstdout: {proc.stdout.strip()[:2000]}")
     data = json.loads(proc.stdout)
     return data["result"], data.get("session_id")
 
@@ -75,6 +81,35 @@ def run_sample(case, workdir, env, model, run=subprocess.run):
     return result
 
 
+def instruction_system_prompt(repo_root):
+    return "\n\n".join((Path(repo_root) / f).read_text() for f in INSTRUCTION_FILES)
+
+
+def call_api(messages, system, model, client, sleep=time.sleep):
+    kwargs = {"model": MODEL_IDS.get(model, model), "max_tokens": MAX_TOKENS,
+              "messages": messages}
+    if system:
+        kwargs["system"] = system
+    for attempt in range(RATE_LIMIT_RETRIES):
+        try:
+            resp = client.messages.create(**kwargs)
+            return "".join(b.text for b in resp.content if b.type == "text")
+        except Exception as e:
+            if getattr(e, "status_code", None) == 429 and attempt < RATE_LIMIT_RETRIES - 1:
+                sleep(RATE_LIMIT_WAIT)
+                continue
+            raise
+
+
+def run_sample_api(case, system, model, client, sleep=time.sleep):
+    messages, text = [], None
+    for turn in case["turns"]:
+        messages.append({"role": "user", "content": turn})
+        text = call_api(list(messages), system, model, client, sleep=sleep)
+        messages.append({"role": "assistant", "content": text})
+    return text
+
+
 def grade_sample(case, response):
     return {c: run_check(c, response) for c in case["checks"] if c in CHECKS}
 
@@ -84,10 +119,12 @@ def pass_fractions(samples):
     return {c: sum(s[c] for s in samples) / len(samples) for c in checks}
 
 
-def run_suite(cases, n, model, repo_root, sandbox, run=subprocess.run):
+def run_suite(cases, n, model, repo_root, sandbox, run=subprocess.run,
+              runtime="cli", client=None):
     config_dir = Path(sandbox) / "claude-config"
     config_dir.mkdir(parents=True, exist_ok=True)
     env = isolated_env(config_dir)
+    system_b = instruction_system_prompt(repo_root) if runtime == "api" else None
 
     arms = {}
     for arm in ["A", "B"]:
@@ -95,8 +132,12 @@ def run_suite(cases, n, model, repo_root, sandbox, run=subprocess.run):
         for case in cases:
             samples = []
             for _ in range(n):
-                workdir = make_workdir(arm, repo_root, sandbox)
-                response = run_sample(case, workdir, env, model, run=run)
+                if runtime == "api":
+                    system = system_b if arm == "B" else None
+                    response = run_sample_api(case, system, model, client)
+                else:
+                    workdir = make_workdir(arm, repo_root, sandbox)
+                    response = run_sample(case, workdir, env, model, run=run)
                 samples.append(grade_sample(case, response))
             fractions = pass_fractions(samples)
             arms[arm][case["id"]] = {
@@ -104,7 +145,7 @@ def run_suite(cases, n, model, repo_root, sandbox, run=subprocess.run):
                 "score": sum(fractions.values()) / len(fractions) if fractions else None,
                 "status": case.get("status"),
             }
-    return {"arms": arms, "n": n, "model": model}
+    return {"arms": arms, "n": n, "model": model, "runtime": runtime}
 
 
 def write_results(results, out_dir, run_id):
@@ -127,6 +168,9 @@ def main():
     ap = argparse.ArgumentParser(description="Run the instruction eval suite.")
     ap.add_argument("--n", type=int, default=5, help="samples per case per arm")
     ap.add_argument("--model", default="haiku")
+    ap.add_argument("--runtime", choices=["api", "cli"], default="cli",
+                    help="api: raw messages API (cheap, no Claude Code harness); "
+                         "cli: claude -p (real-world conditions)")
     ap.add_argument("--cases", default=repo_root / "tests" / "cases")
     ap.add_argument("--out", default=repo_root / "results")
     ap.add_argument("--sandbox", default=None, help="scratch dir (default: temp)")
@@ -135,15 +179,21 @@ def main():
     import tempfile
     sandbox = args.sandbox or tempfile.mkdtemp(prefix="pbm-eval-")
 
+    client = None
+    if args.runtime == "api":
+        import anthropic
+        client = anthropic.Anthropic()
+
     cases = load_cases(args.cases)
     results = run_suite(cases, n=args.n, model=args.model,
-                        repo_root=repo_root, sandbox=sandbox)
+                        repo_root=repo_root, sandbox=sandbox,
+                        runtime=args.runtime, client=client)
     results["instructions_sha"] = _git_sha(repo_root)
     results["timestamp"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
     summary = summarize(results)
     history_path = Path(args.out) / "history.jsonl"
-    base = baseline(load_history(history_path))
+    base = baseline(load_history(history_path), runtime=args.runtime)
     gate_ok, reasons = evaluate_gate(summary, base)
     results["summary"] = summary
     results["gate"] = {"ok": gate_ok, "reasons": reasons, "baseline": base}
@@ -152,6 +202,7 @@ def main():
     path = write_results(results, out_dir=args.out, run_id=run_id)
     append_history(history_path, {
         "run_id": run_id,
+        "runtime": args.runtime,
         "sha": results["instructions_sha"],
         "timestamp": results["timestamp"],
         "suite": summary["suite"],

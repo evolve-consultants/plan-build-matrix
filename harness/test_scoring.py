@@ -85,6 +85,20 @@ def test_baseline_empty_history_is_none():
     assert baseline([]) is None
 
 
+def test_baseline_filters_by_runtime():
+    history = [
+        {"suite": 0.2, "dimensions": {}, "runtime": "api"},
+        {"suite": 0.9, "dimensions": {}, "runtime": "cli"},
+        {"suite": 0.4, "dimensions": {}, "runtime": "api"},
+    ]
+    base = baseline(history, runtime="api")
+    assert base["suite"] == pytest.approx(0.3)   # cli run excluded
+
+
+def test_baseline_runtime_filter_with_no_matches_is_none():
+    assert baseline([{"suite": 0.9, "dimensions": {}, "runtime": "cli"}], runtime="api") is None
+
+
 # --- gate ----------------------------------------------------------------------
 
 def test_gate_passes_without_baseline():

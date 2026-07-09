@@ -7,16 +7,21 @@ import os
 from pathlib import Path
 
 import pytest
+from types import SimpleNamespace
+
 from runner import (
     INSTRUCTION_FILES,
+    call_api,
     call_claude,
     grade_sample,
+    instruction_system_prompt,
     isolated_env,
     load_cases,
     load_env,
     make_workdir,
     pass_fractions,
     run_sample,
+    run_sample_api,
     run_suite,
     write_results,
 )
@@ -142,6 +147,13 @@ def test_call_claude_raises_on_failure(tmp_path):
         call_claude("q", tmp_path, {}, "haiku", run=run)
 
 
+def test_call_claude_failure_includes_stdout(tmp_path):
+    # with --output-format json, claude reports errors on stdout
+    run = FakeRun([{"returncode": 1, "stderr": "", "stdout": "Invalid API key"}])
+    with pytest.raises(RuntimeError, match="Invalid API key"):
+        call_claude("q", tmp_path, {}, "haiku", run=run)
+
+
 # --- run_sample --------------------------------------------------------------
 
 def test_run_sample_multi_turn_resumes(tmp_path):
@@ -168,6 +180,92 @@ def test_grade_sample_runs_only_deterministic_checks():
 def test_pass_fractions():
     samples = [{"1a": True, "2a": True}, {"1a": True, "2a": False}, {"1a": False, "2a": False}]
     assert pass_fractions(samples) == {"1a": pytest.approx(2 / 3), "2a": pytest.approx(1 / 3)}
+
+
+# --- api runtime ---------------------------------------------------------------
+
+class FakeAPI:
+    """Stands in for anthropic.Anthropic(); records create() kwargs."""
+
+    def __init__(self, outputs):
+        self.outputs = list(outputs)
+        self.calls = []
+        self.messages = self   # client.messages.create(...)
+
+    def create(self, **kwargs):
+        self.calls.append(kwargs)
+        out = self.outputs.pop(0)
+        if isinstance(out, Exception):
+            raise out
+        return SimpleNamespace(content=[SimpleNamespace(type="text", text=out)])
+
+
+def test_instruction_system_prompt_concatenates_files():
+    system = instruction_system_prompt(REPO_ROOT)
+    assert "Plan-Build Matrix" in system
+    assert "Response Templates" in system
+
+
+def test_call_api_maps_model_alias_and_passes_system():
+    client = FakeAPI(["hi"])
+    call_api([{"role": "user", "content": "q"}], "SYS", "haiku", client)
+    kwargs = client.calls[0]
+    assert kwargs["model"] == "claude-haiku-4-5-20251001"
+    assert kwargs["system"] == "SYS"
+
+
+def test_call_api_omits_system_when_none():
+    client = FakeAPI(["hi"])
+    call_api([{"role": "user", "content": "q"}], None, "haiku", client)
+    assert "system" not in client.calls[0]
+
+
+def test_call_api_retries_on_429_then_succeeds():
+    err = Exception("rate limited")
+    err.status_code = 429
+    client = FakeAPI([err, "recovered"])
+    naps = []
+    text = call_api([{"role": "user", "content": "q"}], None, "haiku", client,
+                    sleep=naps.append)
+    assert text == "recovered"
+    assert len(naps) == 1
+
+
+def test_call_api_raises_non_rate_limit_errors():
+    err = Exception("bad request")
+    err.status_code = 400
+    client = FakeAPI([err])
+    with pytest.raises(Exception, match="bad request"):
+        call_api([{"role": "user", "content": "q"}], None, "haiku", client)
+
+
+def test_run_sample_api_multi_turn_accumulates_messages():
+    case = {"id": "x", "turns": ["one", "two"], "checks": []}
+    client = FakeAPI(["r1", "r2"])
+    result = run_sample_api(case, None, "haiku", client)
+    assert result == "r2"
+    second = client.calls[1]["messages"]
+    assert [m["role"] for m in second] == ["user", "assistant", "user"]
+    assert second[1]["content"] == "r1"
+
+
+def test_run_suite_api_arm_a_has_no_system_arm_b_has_instructions(tmp_path):
+    case = {"id": "c1", "turns": ["q"], "checks": ["1a"], "status": "gating"}
+    client = FakeAPI(["r"] * 4)
+    results = run_suite([case], n=2, model="haiku", repo_root=REPO_ROOT,
+                        sandbox=tmp_path, runtime="api", client=client)
+    arm_a_calls, arm_b_calls = client.calls[:2], client.calls[2:]
+    assert all("system" not in c for c in arm_a_calls)
+    assert all("Plan-Build Matrix" in c["system"] for c in arm_b_calls)
+    assert results["runtime"] == "api"
+
+
+def test_run_suite_cli_results_note_runtime(tmp_path):
+    case = {"id": "c1", "turns": ["q"], "checks": ["1a"], "status": "gating"}
+    run = FakeRun([fake() for _ in range(2)])
+    results = run_suite([case], n=1, model="haiku", repo_root=REPO_ROOT,
+                        sandbox=tmp_path, run=run)
+    assert results["runtime"] == "cli"
 
 
 # --- run_suite + write_results -------------------------------------------------

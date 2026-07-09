@@ -3,7 +3,7 @@ name = "pbm-harness"
 version = "0.1.0"
 description = "Test harness for the Plan-Build Matrix instructions"
 requires-python = ">=3.12"
-dependencies = ["python-dotenv>=1"]
+dependencies = ["python-dotenv>=1", "anthropic>=0.40"]
 
 [dependency-groups]
 dev = ["pytest>=8"]

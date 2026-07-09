@@ -61,7 +61,10 @@ def append_history(path, entry):
         f.write(json.dumps(entry) + "\n")
 
 
-def baseline(history, last=BASELINE_RUNS):
+def baseline(history, last=BASELINE_RUNS, runtime=None):
+    # scores from different runtimes (api vs cli) are never comparable
+    if runtime is not None:
+        history = [h for h in history if h.get("runtime") == runtime]
     if not history:
         return None
     window = history[-last:]
