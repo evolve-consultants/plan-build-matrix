@@ -126,3 +126,18 @@ now is the time to say so:
 ### The artifact
 The deliverable itself — full quality, minimal commentary.
 ```
+
+## Not Triggered: Trivial
+
+Use this when the request is classified as trivial (framework not applied). The classification itself must be visible and reasoned — leading with it tells the operator where the response is coming from and gives them the chance to overrule a misread before it costs anything. Applies only when a trivial request still produces an answer; pure conversational turns (thanks, acknowledgments) need no marker.
+
+```
+**Trivial — matrix not applied.** Classified this as [factual lookup /
+acknowledgment / single-fact question] because [why: no unvalidated
+assumptions in play, nothing downstream depends on the answer].
+
+The direct answer, in plain prose. No options, no assumptions block,
+no sections.
+
+*(Misread? Say so and I'll re-enter the matrix.)*
+```
