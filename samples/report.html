@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Instruction test results · 2026-07-09</title>
+<style>
+  body { font: 15px/1.5 system-ui, sans-serif; max-width: 780px; margin: 2rem auto; padding: 0 1rem; color: #222; }
+  h1 { font-size: 1.3rem; } h2 { font-size: 1.05rem; margin-top: 2rem; }
+  .meta { color: #666; font-size: .85rem; }
+  .gate { padding: .6rem 1rem; border-radius: 6px; font-weight: 600; margin: 1rem 0; }
+  .pass { background: #e6f4ea; color: #137333; }
+  .headline { display: flex; gap: 2rem; margin: 1.5rem 0; }
+  .headline div { text-align: center; }
+  .headline .num { font-size: 1.8rem; font-weight: 700; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; padding: .35rem .6rem; border-bottom: 1px solid #eee; vertical-align: top; }
+  th { color: #666; font-weight: 600; }
+  .up { color: #137333; } .down { color: #c5221f; } .flat { color: #999; }
+  .tag { font-size: .75rem; padding: .05rem .4rem; border-radius: 4px; background: #fef7e0; color: #b06000; white-space: nowrap; }
+  details.delta { display: inline; }
+  details.delta summary { cursor: pointer; list-style: none; text-decoration: underline dotted; }
+  details.delta div { margin-top: .4rem; padding: .5rem .7rem; background: #f6f8fa; border-radius: 6px; font-size: .82rem; color: #444; }
+  details.delta code { background: #eaeef2; padding: 0 .25rem; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<h1>Plan-Build Matrix — do the instructions work?</h1>
+<p class="meta">Test run 2026-07-09 · instructions version <code>a3f9c21</code> · tested on claude-haiku-4-5 · each test repeated 5 times · scores are the share of repetitions that behaved correctly (1.00 = always)</p>
+
+<div class="gate pass">✔ No regressions — overall score 0.87, previous average 0.85 (a drop of more than 0.05 would fail this run)</div>
+
+<div class="headline">
+  <div><div class="num">0.09</div>Without instructions</div>
+  <div><div class="num">0.87</div>With instructions</div>
+  <div><div class="num up">+0.78</div>Improvement<br><span class="meta">caused by the instructions</span></div>
+</div>
+
+<h2>Scores by behavior <span class="meta">(with instructions)</span></h2>
+<p class="meta">Each behavior is something the instructions are supposed to make Claude do. Click any underlined change to see what caused it.</p>
+<table>
+  <tr><th>Behavior</th><th>Score</th><th>Previous</th><th>Change</th></tr>
+  <tr><td>States its position on the matrix</td><td>0.94</td><td>0.92</td>
+      <td class="up"><details class="delta"><summary>+0.02</summary><div>
+        Check "position statement present" went from 22/24 tests always passing to 23/24.<br>
+        Instruction edits since previous run: <code>a3f9c21</code> "make positioning statement mandatory wording" (CLAUDE.md) — <a href="https://github.com/tedsr/plan-build-matrix/compare/91b02de..a3f9c21">view diff</a><br>
+        <em>Note: changes this small can also be repetition-to-repetition randomness.</em>
+      </div></details></td></tr>
+  <tr><td>Surfaces its assumptions explicitly</td><td>0.83</td><td>0.85</td>
+      <td class="down"><details class="delta"><summary>−0.02</summary><div>
+        Check "assumptions are specific, not filler" dropped on 2 test prompts
+        (<code>ul-deconstruct-02</code>: 5/5 → 3/5, <code>bl-draft-first-01</code>: 4/5 → 3/5).<br>
+        Instruction edits since previous run: <code>a3f9c21</code> "make positioning statement mandatory wording" (CLAUDE.md) — <a href="https://github.com/tedsr/plan-build-matrix/compare/91b02de..a3f9c21">view diff</a><br>
+        <em>Possible cause: the new wording emphasizes positioning over assumptions. Within noise range — watch next run.</em>
+      </div></details></td></tr>
+  <tr><td>Planning mode: options + recommendation + next prompt</td><td>0.90</td><td>0.88</td><td class="up">+0.02</td></tr>
+  <tr><td>Building mode: one artifact, no extras</td><td>0.80</td><td>0.76</td><td class="up">+0.04</td></tr>
+</table>
+
+<h2>Individual test prompts</h2>
+<table>
+  <tr><th>Test</th><th>Expected quadrant</th><th>Score</th><th>Previous</th><th>Change</th></tr>
+  <tr><td>ul-messy-brief-01</td><td>upper-left</td><td>0.91</td><td>0.89</td><td class="up">+0.02</td></tr>
+  <tr><td>ul-deconstruct-02</td><td>upper-left</td><td>0.86</td><td>0.86</td><td class="flat">0</td></tr>
+  <tr><td>bl-draft-first-01</td><td>bottom-left</td><td>0.88</td><td>0.90</td><td class="down">−0.02</td></tr>
+  <tr><td>ur-spec-build-01</td><td>upper-right</td><td>0.84</td><td>0.80</td><td class="up">+0.04</td></tr>
+  <tr><td>br-final-form-01 <span class="tag">in development</span></td><td>bottom-right</td><td>0.55</td><td>0.48</td><td class="up">+0.07</td></tr>
+</table>
+<p class="meta">"In development" tests are new behaviors we're still writing instructions for (test-first). They're reported but can't fail the run; a test graduates once it scores ≥ 0.80 in 2 consecutive runs.</p>
+
+<h2>History</h2>
+<table>
+  <tr><th>Run</th><th>Instructions version</th><th>Instruction changes in this run</th><th>Overall</th><th>Improvement</th><th>Result</th></tr>
+  <tr><td>2026-07-09</td><td><code>a3f9c21</code></td><td>make positioning statement mandatory wording</td><td>0.87</td><td>+0.78</td><td class="up">pass</td></tr>
+  <tr><td>2026-07-06</td><td><code>91b02de</code></td><td>add response templates for all 4 quadrants</td><td>0.85</td><td>+0.76</td><td class="up">pass</td></tr>
+  <tr><td>2026-07-02</td><td><code>7c44a10</code></td><td>(first measured run)</td><td>0.84</td><td>+0.74</td><td class="up">pass</td></tr>
+</table>
+
+<p class="meta">Judge reliability this run: 95% agreement with the human-labeled golden set (minimum 90% — below that the whole run is rejected as untrustworthy).</p>
+
+</body>
+</html>

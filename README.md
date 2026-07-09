@@ -53,3 +53,17 @@ a conversation, Claude moves naturally between quadrants with the aim of landing
 ## SAMPLE PROMPTS
 
 We've included some sample prompts we think are exemplary of the types of prompts you should use in each of the four quadrants. [See the Sample Prompts](./Sample-Prompts-by-Quadrant.md)
+## TESTING
+
+The instructions themselves are under test. [TESTING-METHODOLOGY.md](./TESTING-METHODOLOGY.md) describes the full methodology (behavioral dimensions, binary checks, LLM-as-judge rubric, scoring, and regression rules). The test harness lives in [`harness/`](./harness/).
+
+### Running the tests manually
+
+Requires [uv](https://docs.astral.sh/uv/) (it manages the virtualenv and pins the exact Python and package versions from `uv.lock` — no system-Python surprises):
+
+```sh
+uv sync          # one-time: creates .venv/ from the lockfile
+uv run pytest    # run the test suite
+```
+
+Tests also run automatically in GitHub Actions on every push and pull request to `main` (see [`.github/workflows/tests.yml`](./.github/workflows/tests.yml)).
