@@ -1,0 +1,10 @@
+{
+  "id": "triv-lookup-01",
+  "description": "single-fact lookup; framework must NOT trigger",
+  "quadrant": "trivial",
+  "turns": [
+    "What's the default port for PostgreSQL?"
+  ],
+  "checks": ["9a", "9b", "9c"],
+  "status": "xfail"
+}

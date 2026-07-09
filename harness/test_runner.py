@@ -1,0 +1,190 @@
+"""Runner tests. Spec: TESTING-METHODOLOGY.md section 5.
+
+subprocess calls are faked — no API spend, no claude binary needed.
+"""
+import json
+import os
+from pathlib import Path
+
+import pytest
+from runner import (
+    INSTRUCTION_FILES,
+    call_claude,
+    grade_sample,
+    isolated_env,
+    load_cases,
+    load_env,
+    make_workdir,
+    pass_fractions,
+    run_sample,
+    run_suite,
+    write_results,
+)
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+class FakeRun:
+    """Captures commands; replays canned claude JSON responses."""
+
+    def __init__(self, results):
+        self.results = list(results)
+        self.commands = []
+
+    def __call__(self, cmd, **kwargs):
+        self.commands.append((cmd, kwargs))
+        body = self.results.pop(0)
+
+        class Proc:
+            returncode = body.get("returncode", 0)
+            stdout = json.dumps(body) if "result" in body else body.get("stdout", "")
+            stderr = body.get("stderr", "")
+
+        return Proc()
+
+
+def fake(result="hello", session_id="sess-1", **extra):
+    return {"result": result, "session_id": session_id, **extra}
+
+
+# --- load_cases --------------------------------------------------------------
+
+def test_load_cases_reads_sorted_json(tmp_path):
+    (tmp_path / "b.json").write_text(json.dumps({"id": "b", "turns": ["x"], "checks": []}))
+    (tmp_path / "a.json").write_text(json.dumps({"id": "a", "turns": ["y"], "checks": []}))
+    cases = load_cases(tmp_path)
+    assert [c["id"] for c in cases] == ["a", "b"]
+
+
+def test_load_cases_on_real_dataset():
+    cases = load_cases(REPO_ROOT / "tests" / "cases")
+    assert {c["id"] for c in cases} >= {"ul-messy-brief-01", "br-final-form-01", "triv-lookup-01"}
+
+
+# --- make_workdir ------------------------------------------------------------
+
+def test_workdir_arm_a_is_empty(tmp_path):
+    d = make_workdir("A", REPO_ROOT, tmp_path)
+    assert list(d.iterdir()) == []
+
+
+def test_workdir_arm_b_has_instruction_files(tmp_path):
+    d = make_workdir("B", REPO_ROOT, tmp_path)
+    names = {p.name for p in d.iterdir()}
+    assert names == set(INSTRUCTION_FILES)
+
+
+# --- isolated_env ------------------------------------------------------------
+
+def test_isolated_env_points_config_at_sandbox(tmp_path):
+    env = isolated_env(tmp_path)
+    assert env["CLAUDE_CONFIG_DIR"] == str(tmp_path)
+
+
+def test_isolated_env_passes_api_key_and_path(tmp_path, monkeypatch):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test")
+    env = isolated_env(tmp_path)
+    assert env["ANTHROPIC_API_KEY"] == "sk-test"
+    assert env["PATH"] == os.environ["PATH"]
+
+
+# --- load_env ----------------------------------------------------------------
+
+def test_load_env_reads_api_key_from_file(tmp_path, monkeypatch):
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    envfile = tmp_path / ".env"
+    envfile.write_text("ANTHROPIC_API_KEY=sk-from-file\n")
+    load_env(envfile)
+    assert os.environ["ANTHROPIC_API_KEY"] == "sk-from-file"
+
+
+def test_load_env_does_not_override_existing_env(tmp_path, monkeypatch):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-from-shell")
+    envfile = tmp_path / ".env"
+    envfile.write_text("ANTHROPIC_API_KEY=sk-from-file\n")
+    load_env(envfile)
+    assert os.environ["ANTHROPIC_API_KEY"] == "sk-from-shell"
+
+
+def test_load_env_tolerates_missing_file(tmp_path):
+    load_env(tmp_path / "nope.env")   # must not raise
+
+
+# --- call_claude -------------------------------------------------------------
+
+def test_call_claude_builds_print_command(tmp_path):
+    run = FakeRun([fake()])
+    call_claude("hi", tmp_path, {}, "haiku", run=run)
+    cmd, kwargs = run.commands[0]
+    assert cmd[:3] == ["claude", "-p", "hi"]
+    assert cmd[cmd.index("--model") + 1] == "haiku"
+    assert cmd[cmd.index("--output-format") + 1] == "json"
+    assert "--resume" not in cmd
+    assert kwargs["cwd"] == tmp_path
+
+
+def test_call_claude_resumes_session(tmp_path):
+    run = FakeRun([fake()])
+    call_claude("again", tmp_path, {}, "haiku", session="sess-9", run=run)
+    cmd, _ = run.commands[0]
+    assert cmd[cmd.index("--resume") + 1] == "sess-9"
+
+
+def test_call_claude_returns_result_and_session(tmp_path):
+    run = FakeRun([fake(result="the answer", session_id="s42")])
+    result, session = call_claude("q", tmp_path, {}, "haiku", run=run)
+    assert (result, session) == ("the answer", "s42")
+
+
+def test_call_claude_raises_on_failure(tmp_path):
+    run = FakeRun([{"returncode": 1, "stderr": "boom"}])
+    with pytest.raises(RuntimeError, match="boom"):
+        call_claude("q", tmp_path, {}, "haiku", run=run)
+
+
+# --- run_sample --------------------------------------------------------------
+
+def test_run_sample_multi_turn_resumes(tmp_path):
+    case = {"id": "x", "turns": ["one", "two"], "checks": []}
+    run = FakeRun([fake(result="r1", session_id="s1"), fake(result="r2", session_id="s1")])
+    result = run_sample(case, tmp_path, {}, "haiku", run=run)
+    assert result == "r2"
+    first_cmd, _ = run.commands[0]
+    second_cmd, _ = run.commands[1]
+    assert "--resume" not in first_cmd
+    assert second_cmd[second_cmd.index("--resume") + 1] == "s1"
+
+
+# --- grading + aggregation ----------------------------------------------------
+
+def test_grade_sample_runs_only_deterministic_checks():
+    case = {"id": "x", "turns": ["q"], "checks": ["1a", "1b", "2a"]}
+    verdicts = grade_sample(case, "**Operating from: Upper-Left**")
+    assert set(verdicts) == {"1a", "2a"}   # 1b is a judge check: skipped for now
+    assert verdicts["1a"] is True
+    assert verdicts["2a"] is False
+
+
+def test_pass_fractions():
+    samples = [{"1a": True, "2a": True}, {"1a": True, "2a": False}, {"1a": False, "2a": False}]
+    assert pass_fractions(samples) == {"1a": pytest.approx(2 / 3), "2a": pytest.approx(1 / 3)}
+
+
+# --- run_suite + write_results -------------------------------------------------
+
+def test_run_suite_runs_both_arms(tmp_path):
+    case = {"id": "c1", "turns": ["q"], "checks": ["1a"], "status": "gating"}
+    run = FakeRun([fake() for _ in range(4)])   # 2 arms x n=2
+    results = run_suite([case], n=2, model="haiku", repo_root=REPO_ROOT,
+                        sandbox=tmp_path, run=run)
+    assert set(results["arms"]) == {"A", "B"}
+    assert results["arms"]["A"]["c1"]["checks"]["1a"] == 0.0   # "hello" has no scaffold
+    assert results["n"] == 2
+    assert len(run.commands) == 4
+
+
+def test_write_results_creates_run_file(tmp_path):
+    results = {"arms": {}, "n": 1, "model": "haiku"}
+    path = write_results(results, out_dir=tmp_path, run_id="r1")
+    assert path == tmp_path / "r1.json"
+    assert json.loads(path.read_text())["model"] == "haiku"

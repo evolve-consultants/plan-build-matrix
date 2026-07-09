@@ -67,3 +67,19 @@ uv run pytest    # run the test suite
 ```
 
 Tests also run automatically in GitHub Actions on every push and pull request to `main` (see [`.github/workflows/tests.yml`](./.github/workflows/tests.yml)).
+
+### How the harness works
+
+- **`harness/checks.py`** — the Layer-1 deterministic checkers: nine regex/structure predicates behind a `run_check(id, text)` registry. Each verifies one observable behavior (positioning statement present, assumptions block present, options delineated, etc.). Check `9b` ("scaffold absent", for trivial requests) is defined as the literal negation of the five scaffold checkers, so the two can never drift apart.
+- **`harness/runner.py`** — the eval runner. It executes every case in `tests/cases/*.json` through `claude -p` under two conditions: **arm A** (empty working dir, no instructions — the baseline) and **arm B** (working dir containing `CLAUDE.md` + `PLAN_BUILD_MATRIX_RESPONSE_TEMPLATES.md`). Each case runs N times per arm (responses are nondeterministic; a check's score is the fraction of repetitions that passed). Multi-turn cases resume the same session via `--resume`.
+- **Isolation** — the subprocess environment is built from scratch: only `PATH` and the API key pass through, and `CLAUDE_CONFIG_DIR` points at an empty sandbox (plus `--setting-sources project` on the CLI). This keeps any global `~/.claude/CLAUDE.md` from contaminating the no-instructions baseline.
+- **Results** — written to `results/<timestamp>-<git-sha>.json` with per-check pass fractions, case scores, the instructions' commit SHA, and a timestamp, so every score is attributable to an exact version of the instructions.
+
+### Running the eval against real Claude
+
+```sh
+cp harness/.env.example harness/.env   # then put your API key in harness/.env
+uv run python harness/runner.py --n 5 --model haiku
+```
+
+The sandboxed config dir has no stored auth, so the key in `harness/.env` (or an `ANTHROPIC_API_KEY` already set in your environment, which takes precedence) is required. `.env` is gitignored — never commit it. A full run costs real API money; start with `--n 1` as a smoke test.

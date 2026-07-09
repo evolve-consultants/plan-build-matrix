@@ -1,0 +1,10 @@
+{
+  "id": "br-final-form-01",
+  "description": "fully specified ask; correct read is bottom-right",
+  "quadrant": "bottom-right",
+  "turns": [
+    "Write a git commit message for this diff: renamed `getUser` to `fetchUser` in api.js and updated its 3 call sites. Conventional Commits format, type refactor, no body."
+  ],
+  "checks": ["1a", "1b", "4a", "4b"],
+  "status": "xfail"
+}
