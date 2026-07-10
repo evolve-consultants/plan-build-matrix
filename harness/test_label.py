@@ -13,14 +13,24 @@ def make_run_fixture(tmp_path):
     tdir.mkdir(parents=True)
     (tdir / "B-c1-0.md").write_text("full response zero")
     (tdir / "B-c1-1.md").write_text("full response one")
-    results = {"arms": {"B": {"c1": {
-        "checks": {"position-stated": 1.0, "position-correct": 0.5},
-        "transcripts": ["r1/B-c1-0.md", "r1/B-c1-1.md"],
-        "sample_verdicts": [
-            {"position-stated": True, "position-correct": True},
-            {"position-stated": True, "position-correct": False},
-        ],
-    }}}}
+    (tdir / "A-c1-0.md").write_text("bare baseline answer")
+    results = {"arms": {
+        "B": {"c1": {
+            "checks": {"position-stated": 1.0, "position-correct": 0.5},
+            "transcripts": ["r1/B-c1-0.md", "r1/B-c1-1.md"],
+            "sample_verdicts": [
+                {"position-stated": True, "position-correct": True},
+                {"position-stated": True, "position-correct": False},
+            ],
+        }},
+        "A": {"c1": {
+            "checks": {"position-stated": 0.0, "position-correct": 0.0},
+            "transcripts": ["r1/A-c1-0.md"],
+            "sample_verdicts": [
+                {"position-stated": False, "position-correct": False},
+            ],
+        }},
+    }}
     return results, tmp_path / "transcripts"
 
 
@@ -40,10 +50,24 @@ def test_candidates_judge_checks_only_with_proposed_labels(tmp_path):
     cands = candidates(results, troot, golden=[])
     # position-stated is deterministic: never a candidate
     assert all(c["check"] == "position-correct" for c in cands)
-    assert len(cands) == 2
+    assert len(cands) == 3
     by_response = {c["response"]: c["proposed_label"] for c in cands}
     assert by_response["full response zero"] == "pass"
     assert by_response["full response one"] == "fail"
+
+
+def test_candidates_carry_their_arm(tmp_path):
+    results, troot = make_run_fixture(tmp_path)
+    arms = {c["response"]: c["arm"] for c in candidates(results, troot, golden=[])}
+    assert arms["bare baseline answer"] == "A"
+    assert arms["full response zero"] == "B"
+
+
+def test_candidates_arm_filter(tmp_path):
+    results, troot = make_run_fixture(tmp_path)
+    cands = candidates(results, troot, golden=[], arm="B")
+    assert len(cands) == 2
+    assert all(c["arm"] == "B" for c in cands)
 
 
 def test_candidates_skip_items_already_in_golden(tmp_path):

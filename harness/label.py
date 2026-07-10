@@ -71,10 +71,12 @@ def _disagreement(check, verdict):
     return (not verdict[check]) and sibling in verdict and verdict[sibling]
 
 
-def candidates(results, transcripts_root, golden):
+def candidates(results, transcripts_root, golden, arm=None):
     seen = {(g["case_id"], g["check"], g["response"]) for g in golden}
     out = []
-    for cases in results["arms"].values():
+    for arm_name, cases in results["arms"].items():
+        if arm is not None and arm_name != arm:
+            continue
         for case_id, r in cases.items():
             for i, verdict in enumerate(r.get("sample_verdicts", [])):
                 response = (Path(transcripts_root) / r["transcripts"][i]).read_text()
@@ -86,11 +88,13 @@ def candidates(results, transcripts_root, golden):
                     out.append({
                         "case_id": case_id,
                         "check": check,
+                        "arm": arm_name,
                         "response": response,
                         "proposed_label": "pass" if passed else "fail",
                         "disagreement": _disagreement(check, verdict),
                     })
-    return sorted(out, key=lambda c: not c["disagreement"])
+    # disagreements first; then instruction-arm (B) before baseline (A)
+    return sorted(out, key=lambda c: (not c["disagreement"], c["arm"] != "B"))
 
 
 def _next_id(golden):
@@ -104,7 +108,10 @@ def label_loop(cands, golden_path, cases_by_id, ask=input, out=print):
     counter = _next_id(golden)
     added = 0
     for k, c in enumerate(cands):
+        arm_tag = {"A": "arm A (no instructions - baseline)",
+                   "B": "arm B (with instructions)"}.get(c.get("arm"), "")
         out(f"\n[{k + 1}/{len(cands)}] {c['case_id']} · {c['check']}"
+            f" · {arm_tag}"
             f" · judge says: {c['proposed_label']}"
             + ("  (disagrees with deterministic sibling)" if c.get("disagreement") else ""))
         out("PROMPT: " + " // ".join(cases_by_id[c["case_id"]]["turns"]))
@@ -148,6 +155,8 @@ def main():
     ap.add_argument("--transcripts", default=REPO_ROOT / "transcripts")
     ap.add_argument("--cases", default=REPO_ROOT / "tests" / "cases")
     ap.add_argument("--golden", default=REPO_ROOT / "tests" / "golden" / "golden.json")
+    ap.add_argument("--arm", choices=["A", "B"], default=None,
+                    help="only label candidates from one arm (B = with instructions)")
     args = ap.parse_args()
 
     from runner import load_cases
@@ -155,7 +164,7 @@ def main():
     golden_path = Path(args.golden)
     golden = json.loads(golden_path.read_text()) if golden_path.exists() else []
 
-    cands = candidates(latest_run(args.results), args.transcripts, golden)
+    cands = candidates(latest_run(args.results), args.transcripts, golden, arm=args.arm)
     if not cands:
         print("no unlabeled candidates in the latest run")
         return
