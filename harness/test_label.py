@@ -124,6 +124,28 @@ def test_label_loop_s_skips_and_q_quits(tmp_path):
     assert golden == []
 
 
+def test_card_has_visual_separator(tmp_path):
+    _, _, shown = run_loop(tmp_path, [cand("r1"), cand("r2")], ["y", "y"])
+    separators = [s for s in shown if "═══" in s]
+    assert len(separators) >= 2   # one before each card
+
+
+def test_judge_verdict_is_scannable_on_own_line(tmp_path):
+    _, _, shown = run_loop(tmp_path, [cand(label="fail")], ["y"])
+    assert any(s.strip().startswith("JUDGE SAYS: FAIL") for s in shown)
+
+
+def test_session_header_shows_remaining_and_certified_counts(tmp_path):
+    golden_path = tmp_path / "golden.json"
+    golden_path.write_text(json.dumps([{"id": "g001", "case_id": "x", "check": "c",
+                                        "response": "r", "label": "pass"}]))
+    shown = []
+    label_loop([cand("r1"), cand("r2")], golden_path, CASES,
+               ask=lambda _: "q", out=shown.append)
+    assert any("2 candidates to label" in s and "1 already certified" in s
+               for s in shown)
+
+
 def test_label_loop_shows_expected_and_received_evidence(tmp_path):
     response = "Some intro.\n**Operating from: Bottom-Right (Build + Quality)**\nMore text." * 3
     _, _, shown = run_loop(tmp_path, [cand(response)], ["y"])

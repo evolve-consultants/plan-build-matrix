@@ -102,18 +102,24 @@ def _next_id(golden):
     return max(taken, default=0) + 1
 
 
+SEPARATOR = "═" * 72
+
+
 def label_loop(cands, golden_path, cases_by_id, ask=input, out=print):
     golden = json.loads(golden_path.read_text()) if golden_path.exists() else []
     rubric = parse_rubric()
     counter = _next_id(golden)
     added = 0
+    out(f"\n{len(cands)} candidates to label · {len(golden)} already certified "
+        f"in the golden set (certified items never reappear)")
     for k, c in enumerate(cands):
         arm_tag = {"A": "response WITHOUT instructions (baseline)",
                    "B": "response WITH instructions"}.get(c.get("arm"), "")
-        out(f"\n[{k + 1}/{len(cands)}] {c['case_id']} · {c['check']}"
-            f" · {arm_tag}"
-            f" · judge says: {c['proposed_label']}"
-            + ("  (disagrees with deterministic sibling)" if c.get("disagreement") else ""))
+        out("\n" + SEPARATOR)
+        out(f"[{k + 1}/{len(cands)}] {c['case_id']} · {c['check']} · {arm_tag}")
+        out(f"JUDGE SAYS: {c['proposed_label'].upper()}"
+            + ("   ⚠ DISAGREES with its deterministic sibling check"
+               if c.get("disagreement") else ""))
         out("PROMPT: " + " // ".join(cases_by_id[c["case_id"]]["turns"]))
         out("CRITERION: " + rubric["criteria"].get(c["check"], "(unknown check)"))
         out("EXPECTED: " + expectation(c["check"], cases_by_id[c["case_id"]]))
