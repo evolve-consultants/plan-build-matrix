@@ -1,0 +1,64 @@
+# Eval run skeleton: executes the instruction eval and persists results,
+# transcripts, and history to the `data` branch (which GitHub Pages serves).
+#
+# Manual trigger only for now — switch `on:` to `push: {branches: [main]}`
+# once the API tier supports full runs and the report renderer exists.
+name: eval
+
+on:
+  workflow_dispatch:
+    inputs:
+      n:
+        description: samples per case per arm
+        default: "5"
+      runtime:
+        description: api (cheap) or cli (real-world, needs higher API tier)
+        default: api
+
+permissions:
+  contents: write   # to push to the data branch
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          ref: data
+          path: data
+
+      - uses: astral-sh/setup-uv@v5
+
+      - run: uv sync
+
+      - name: carry history forward from data branch
+        run: |
+          mkdir -p results
+          cp data/results/history.jsonl results/history.jsonl 2>/dev/null || true
+
+      - name: run eval
+        id: eval
+        continue-on-error: true   # gate failure must not block persisting results
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          uv run python harness/runner.py \
+            --runtime "${{ inputs.runtime }}" --n "${{ inputs.n }}"
+
+      - name: persist to data branch
+        run: |
+          mkdir -p data/results data/transcripts
+          cp -R results/. data/results/
+          cp -R transcripts/. data/transcripts/ 2>/dev/null || true
+          cd data
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "eval run: instructions @ ${GITHUB_SHA::7}" || echo "nothing to commit"
+          git push
+
+      - name: fail job if gate failed
+        if: steps.eval.outcome == 'failure'
+        run: exit 1

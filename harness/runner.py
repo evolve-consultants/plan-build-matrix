@@ -130,7 +130,7 @@ def run_suite(cases, n, model, repo_root, sandbox, run=subprocess.run,
     for arm in ["A", "B"]:
         arms[arm] = {}
         for case in cases:
-            samples = []
+            verdicts, responses = [], []
             for _ in range(n):
                 if runtime == "api":
                     system = system_b if arm == "B" else None
@@ -138,14 +138,29 @@ def run_suite(cases, n, model, repo_root, sandbox, run=subprocess.run,
                 else:
                     workdir = make_workdir(arm, repo_root, sandbox)
                     response = run_sample(case, workdir, env, model, run=run)
-                samples.append(grade_sample(case, response))
-            fractions = pass_fractions(samples)
+                responses.append(response)
+                verdicts.append(grade_sample(case, response))
+            fractions = pass_fractions(verdicts)
             arms[arm][case["id"]] = {
                 "checks": fractions,
                 "score": sum(fractions.values()) / len(fractions) if fractions else None,
                 "status": case.get("status"),
+                "samples": responses,
             }
     return {"arms": arms, "n": n, "model": model, "runtime": runtime}
+
+
+def write_transcripts(results, transcripts_root, run_id):
+    run_dir = Path(transcripts_root) / run_id
+    run_dir.mkdir(parents=True, exist_ok=True)
+    for arm, cases in results["arms"].items():
+        for case_id, case_result in cases.items():
+            paths = []
+            for i, text in enumerate(case_result.pop("samples", [])):
+                name = f"{arm}-{case_id}-{i}.md"
+                (run_dir / name).write_text(text or "")
+                paths.append(f"{run_id}/{name}")
+            case_result["transcripts"] = paths
 
 
 def write_results(results, out_dir, run_id):
@@ -173,6 +188,7 @@ def main():
                          "cli: claude -p (real-world conditions)")
     ap.add_argument("--cases", default=repo_root / "tests" / "cases")
     ap.add_argument("--out", default=repo_root / "results")
+    ap.add_argument("--transcripts", default=repo_root / "transcripts")
     ap.add_argument("--sandbox", default=None, help="scratch dir (default: temp)")
     args = ap.parse_args()
 
@@ -199,6 +215,7 @@ def main():
     results["gate"] = {"ok": gate_ok, "reasons": reasons, "baseline": base}
 
     run_id = f"{time.strftime('%Y%m%d-%H%M%S')}-{results['instructions_sha']}"
+    write_transcripts(results, transcripts_root=args.transcripts, run_id=run_id)
     path = write_results(results, out_dir=args.out, run_id=run_id)
     append_history(history_path, {
         "run_id": run_id,

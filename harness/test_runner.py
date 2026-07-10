@@ -24,6 +24,7 @@ from runner import (
     run_sample_api,
     run_suite,
     write_results,
+    write_transcripts,
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -279,6 +280,26 @@ def test_run_suite_runs_both_arms(tmp_path):
     assert results["arms"]["A"]["c1"]["checks"]["1a"] == 0.0   # "hello" has no scaffold
     assert results["n"] == 2
     assert len(run.commands) == 4
+
+
+def test_run_suite_keeps_raw_samples(tmp_path):
+    case = {"id": "c1", "turns": ["q"], "checks": ["1a"], "status": "gating"}
+    run = FakeRun([fake(result="resp-arm-a"), fake(result="resp-arm-b")])
+    results = run_suite([case], n=1, model="haiku", repo_root=REPO_ROOT,
+                        sandbox=tmp_path, run=run)
+    assert results["arms"]["A"]["c1"]["samples"] == ["resp-arm-a"]
+    assert results["arms"]["B"]["c1"]["samples"] == ["resp-arm-b"]
+
+
+def test_write_transcripts_writes_files_and_rewrites_references(tmp_path):
+    results = {"arms": {"A": {"c1": {"samples": ["hello world", "second try"],
+                                     "checks": {"1a": 0.0}}}}}
+    write_transcripts(results, transcripts_root=tmp_path, run_id="r1")
+    assert (tmp_path / "r1" / "A-c1-0.md").read_text() == "hello world"
+    assert (tmp_path / "r1" / "A-c1-1.md").read_text() == "second try"
+    case = results["arms"]["A"]["c1"]
+    assert case["transcripts"] == ["r1/A-c1-0.md", "r1/A-c1-1.md"]
+    assert "samples" not in case   # raw text must not bloat results.json
 
 
 def test_write_results_creates_run_file(tmp_path):
