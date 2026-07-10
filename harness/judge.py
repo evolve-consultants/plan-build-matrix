@@ -16,7 +16,7 @@ JUDGE_MODEL = "claude-haiku-4-5-20251001"
 JUDGE_MAX_TOKENS = 200
 
 _FRAME = re.compile(r"```\n(.*?)```", re.S)
-_CRITERION = re.compile(r"^### (\w{2}) — .*?\n(.*?)(?=^### |\Z)", re.M | re.S)
+_CRITERION = re.compile(r"^### ([\w-]+) — .*?\n(.*?)(?=^### |\Z)", re.M | re.S)
 
 
 def parse_rubric(path=RUBRIC_FILE):

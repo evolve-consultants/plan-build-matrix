@@ -5,6 +5,6 @@
   "turns": [
     "What's the default port for PostgreSQL?"
   ],
-  "checks": ["9a", "9b", "9c"],
+  "checks": ["trivial-marker", "scaffold-absent", "trivial-reason"],
   "status": "xfail"
 }

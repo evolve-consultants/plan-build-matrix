@@ -9,7 +9,7 @@
       "turns": [
         "My app feels slow sometimes and I think caching might help but I'm not sure where the problem is. What should I do?"
       ],
-      "checks": ["1a", "1b", "2a", "2b", "3a", "3b", "3c"],
+      "checks": ["position-stated", "position-correct", "assumptions-present", "assumptions-specific", "options-listed", "recommendation-given", "next-prompt-given"],
       "status": "gating",
       "expected_shape": "positioning statement naming upper-left; <assumptions> block with request-specific content; >=2 options; recommendation + why; exact next prompt"
     },
@@ -20,7 +20,7 @@
       "turns": [
         "Write a git commit message for this diff: renamed `getUser` to `fetchUser` in api.js and updated its 3 call sites. Conventional Commits format, type refactor, no body."
       ],
-      "checks": ["1a", "1b", "4a", "4b"],
+      "checks": ["position-stated", "position-correct", "single-artifact", "minimal-commentary"],
       "status": "xfail",
       "expected_shape": "one commit message, no alternatives, near-zero commentary"
     },
@@ -31,7 +31,7 @@
       "turns": [
         "What's the default port for PostgreSQL?"
       ],
-      "checks": ["9a", "9b", "9c"],
+      "checks": ["trivial-marker", "scaffold-absent", "trivial-reason"],
       "status": "xfail",
       "expected_shape": "trivial marker with reason, direct answer, no positioning statement, no assumptions block, no options"
     }
@@ -40,42 +40,42 @@
   "golden": [
     {
       "case_id": "ul-messy-brief-01",
-      "check": "1b",
+      "check": "position-correct",
       "response_excerpt": "**Operating from: Upper-Left (Plan + Verify)** — lots of unknowns about where the slowness is, so I'm exploring before recommending...",
       "label": "pass",
       "why": "names upper-left; case expects upper-left"
     },
     {
       "case_id": "ul-messy-brief-01",
-      "check": "1b",
+      "check": "position-correct",
       "response_excerpt": "**Operating from: Bottom-Right (Build + Quality)** — here's a Redis caching layer for your app...",
       "label": "fail",
       "why": "claims bottom-right on a high-uncertainty ask; wrong quadrant read"
     },
     {
       "case_id": "ul-messy-brief-01",
-      "check": "2b",
+      "check": "assumptions-specific",
       "response_excerpt": "<assumptions><project>I assume your codebase follows best practices.</project><task>I assume you want a good solution.</task></assumptions>",
       "label": "fail",
       "why": "hollow compliance — block present (2a passes) but content is filler that fits any request; 2b exists to catch exactly this"
     },
     {
       "case_id": "br-final-form-01",
-      "check": "4a",
+      "check": "single-artifact",
       "response_excerpt": "refactor: rename getUser to fetchUser\n\nAlternatively, if you prefer more detail, you could also use: refactor(api): rename getUser to fetchUser across call sites",
       "label": "fail",
       "why": "right-side case; offered an unrequested alternative"
     },
     {
       "case_id": "triv-lookup-01",
-      "check": "9c",
+      "check": "trivial-reason",
       "response_excerpt": "**Trivial — matrix not applied.** Single-fact lookup; the answer doesn't depend on any assumption about your project. PostgreSQL's default port is 5432.",
       "label": "pass",
       "why": "names the classification and gives a reason specific to this request"
     },
     {
       "case_id": "triv-lookup-01",
-      "check": "9c",
+      "check": "trivial-reason",
       "response_excerpt": "**Trivial — matrix not applied.** This is simple. PostgreSQL's default port is 5432.",
       "label": "fail",
       "why": "reason is boilerplate that would fit any request — fails the swap test"

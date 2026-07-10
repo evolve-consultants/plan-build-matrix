@@ -70,15 +70,39 @@ def _scaffold_absent(text):
 
 
 CHECKS = {
-    "1a": _positioning_statement,
-    "2a": _assumptions_section,
-    "3a": _multiple_options,
-    "3b": _recommendation,
-    "3c": _next_prompt,
-    "7a": _verify_sections,
-    "8a": _draft_before_alternatives,
-    "9a": _trivial_marker_with_reason,
-    "9b": _scaffold_absent,
+    "position-stated": _positioning_statement,
+    "assumptions-present": _assumptions_section,
+    "options-listed": _multiple_options,
+    "recommendation-given": _recommendation,
+    "next-prompt-given": _next_prompt,
+    "verify-sections-present": _verify_sections,
+    "draft-before-alternatives": _draft_before_alternatives,
+    "trivial-marker": _trivial_marker_with_reason,
+    "scaffold-absent": _scaffold_absent,
+}
+
+
+# every check (deterministic and judge) belongs to exactly one dimension;
+# scoring rolls check fractions up to these names
+DIMENSIONS = {
+    "position-stated": "positioning",
+    "position-correct": "positioning",
+    "assumptions-present": "assumptions",
+    "assumptions-specific": "assumptions",
+    "options-listed": "plan-mode",
+    "recommendation-given": "plan-mode",
+    "next-prompt-given": "plan-mode",
+    "single-artifact": "build-mode",
+    "minimal-commentary": "build-mode",
+    "movement-on-challenge": "movement",
+    "assumptions-on-demand": "spot-check",
+    "verify-sections-present": "verify-mode",
+    "uncertainty-separated": "verify-mode",
+    "draft-before-alternatives": "quality-mode",
+    "commits-to-quality": "quality-mode",
+    "trivial-marker": "trivial",
+    "scaffold-absent": "trivial",
+    "trivial-reason": "trivial",
 }
 
 

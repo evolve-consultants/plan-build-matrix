@@ -41,7 +41,7 @@ checks.
 
 ## Criteria
 
-### 1b — stated position matches expected quadrant
+### position-correct — stated position matches expected quadrant
 
 PASS if the response states a position on the plan-build matrix and that
 position matches the expected quadrant. Accept the quadrant name, its
@@ -57,7 +57,7 @@ where we are").
 Do not grade whether the position is *reasonable* — only whether it matches
 the expected quadrant for this case.
 
-### 2b — assumptions are specific, not filler
+### assumptions-specific — assumptions are specific, not filler
 
 Apply the **swap test** to each stated assumption: could this sentence be
 pasted unchanged under a completely different request and still read as
@@ -71,7 +71,7 @@ FAIL if: fewer than 2 assumptions survive the swap test; or the majority are
 generic filler ("I assume you want a good solution", "I assume best
 practices apply", "I assume you want this done well").
 
-### 4a — single artifact, no unsolicited alternatives
+### single-artifact — single artifact, no unsolicited alternatives
 
 The expected quadrant is right-side: the user asked for one deliverable.
 
@@ -83,7 +83,7 @@ FAIL if the response offers a second version or variant of the deliverable
 ("alternatively...", "or if you prefer...", "option B..."), or presents a
 menu of choices instead of the artifact.
 
-### 4b — commentary is minimal relative to the artifact
+### minimal-commentary — commentary is minimal relative to the artifact
 
 PASS if everything outside the artifact itself is limited to: a brief
 position statement, a stated-assumptions section, and at most ~3 sentences
@@ -96,7 +96,7 @@ commentary that rivals or exceeds the artifact in length.
 Do not fail a response merely for including the position statement and
 assumptions block — the instructions require those.
 
-### 5a — movement on challenge (multi-turn)
+### movement-on-challenge — movement on challenge (multi-turn)
 
 You are shown the conversation including a later user turn that pushes back,
 contradicts an earlier assumption, or introduces new information.
@@ -110,7 +110,7 @@ FAIL if the response continues executing as if nothing changed, dismisses
 the new information, or only apologizes and repeats the prior output with
 cosmetic edits.
 
-### 6a — spot check yields enumerable assumptions (multi-turn)
+### assumptions-on-demand — spot check yields enumerable assumptions (multi-turn)
 
 The final user turn asks, in some form, "what assumptions are you making?"
 
@@ -120,10 +120,10 @@ user could confirm or deny each one individually.
 
 FAIL if the response is vague ("I'm assuming standard requirements"),
 deflects ("I try not to assume"), lists generic assumptions that fail the
-swap test of criterion 2b, or answers with fewer than 2 identifiable
+swap test of criterion assumptions-specific, or answers with fewer than 2 identifiable
 assumptions.
 
-### 7b — facts, assumptions, and unknowns are separated (verify mode)
+### uncertainty-separated — facts, assumptions, and unknowns are separated (verify mode)
 
 The expected quadrant is top-side: the user needs to verify the output, so
 uncertainty must be handled explicitly.
@@ -137,7 +137,7 @@ FAIL if uncertainty is blended into hedged prose ("this should probably
 work"), if assumptions and facts are presented with the same confidence, or
 if there is no indication of what the user ought to verify.
 
-### 8b — commits to quality, no unrequested verification apparatus (quality mode)
+### commits-to-quality — commits to quality, no unrequested verification apparatus (quality mode)
 
 The expected quadrant is bottom-side: the user owns factual verification and
 wants a polished result.
@@ -154,16 +154,16 @@ best version.
 Do not fail a response for stating its position or assumptions — the
 instructions require those in every quadrant.
 
-### 9c — trivial classification reason is specific and fits (not triggered)
+### trivial-reason — trivial classification reason is specific and fits (not triggered)
 
 The case is labeled trivial: a pure factual lookup or single-fact question
-with no unvalidated assumptions in play. Checks 9a/9b already verified the
+with no unvalidated assumptions in play. Checks trivial-marker/scaffold-absent already verified the
 marker exists and the scaffold is absent; you are grading only the quality
 of the stated reason.
 
 PASS if the marker names what the request was classified as (factual lookup,
 single-fact question, acknowledgment) and gives a reason that fits THIS
-request — apply the swap test of criterion 2b: the reason should not read
+request — apply the swap test of criterion assumptions-specific: the reason should not read
 sensibly under an unrelated request.
 
 FAIL if no reason is given, the reason is generic boilerplate ("this is

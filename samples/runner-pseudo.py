@@ -1,7 +1,7 @@
 # SAMPLE — runner pseudo-code (sense-check only, not runnable)
 
 N = 5
-DETERMINISTIC = {"1a", "2a", "3a", "3b", "3c", "7a", "8a", "9a", "9b"}   # regex/structure checks
+DETERMINISTIC = {"position-stated", "assumptions-present", "options-listed", "recommendation-given", "next-prompt-given", "verify-sections-present", "draft-before-alternatives", "trivial-marker", "scaffold-absent"}   # regex/structure checks
 GATING_EPS_SUITE, GATING_EPS_DIM = 0.05, 0.10
 
 def run_subject(case, arm):

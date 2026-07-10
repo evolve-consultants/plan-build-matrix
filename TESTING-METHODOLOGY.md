@@ -23,40 +23,51 @@ guarantee the two modes' scores are never compared.
 Derived from README "How to verify it's working". Each dimension decomposes
 into binary checks, graded deterministically (D) or by LLM judge (J).
 
-| # | Dimension | Checks | Grader | Turns |
-|---|-----------|--------|--------|-------|
-| 1 | Positioning statement | 1a: response contains a matrix-position statement ("Operating from" or equivalent) | D | 1 |
-| | | 1b: the stated position matches the case's expected quadrant | J | 1 |
-| 2 | Assumption surfacing | 2a: response contains an explicit assumptions section (`<assumptions>` block or equivalent) | D | 1 |
-| | | 2b: stated assumptions are specific to the request, not generic filler | J | 1 |
-| 3 | Mode matching (left) | 3a: multiple options present | D | 1 |
-| | | 3b: Recommended path + why present | D | 1 |
-| | | 3c: exact next prompt present | D | 1 |
-| 4 | Mode matching (right) | 4a: single artifact, no unsolicited alternatives | J | 1 |
-| | | 4b: commentary is minimal relative to artifact | J | 1 |
-| 5 | Movement on challenge | 5a: after pushback/new info, response shifts toward exploration (options/assumptions reopen) | J | 2+ |
-| 6 | Spot check | 6a: "what assumptions are you making?" yields a specific, enumerable list | J | 2 |
-| 7 | Verify-mode (top) | 7a: (upper-right cases) "what I'm confident about" + "what I'd double-check" sections present, or equivalents | D | 1 |
-| | | 7b: facts, assumptions, and unknowns are separated and stated checkably, not blended into hedged prose | J | 1 |
-| 8 | Quality-mode (bottom) | 8a: (bottom-left cases) a draft artifact appears before any alternatives | D | 1 |
-| | | 8b: commits to artifact quality; no unrequested verification apparatus | J | 1 |
-| 9 | Trivial handling (not triggered) | 9a: trivial marker present ("matrix not applied" + a classification reason) | D | 1 |
-| | | 9b: scaffold absent — no positioning statement, no assumptions block, no options/recommendation sections | D | 1 |
-| | | 9c: the stated classification reason is specific and fits the request | J | 1 |
+| Dimension | Check | Grader | Turns |
+|-----------|-------|--------|-------|
+| **positioning** | `position-stated`: response contains a matrix-position statement ("Operating from" or equivalent) | D | 1 |
+| | `position-correct`: the stated position matches the case's expected quadrant | J | 1 |
+| **assumptions** | `assumptions-present`: explicit assumptions section (`<assumptions>` block or equivalent) | D | 1 |
+| | `assumptions-specific`: assumptions are specific to the request, not generic filler | J | 1 |
+| **plan-mode** | `options-listed`: multiple options present | D | 1 |
+| | `recommendation-given`: recommended path + why present | D | 1 |
+| | `next-prompt-given`: exact next prompt present | D | 1 |
+| **build-mode** | `single-artifact`: one deliverable, no unsolicited alternatives | J | 1 |
+| | `minimal-commentary`: commentary is minimal relative to artifact | J | 1 |
+| **movement** | `movement-on-challenge`: pushback/new info shifts response toward exploration | J | 2+ |
+| **spot-check** | `assumptions-on-demand`: "what assumptions are you making?" yields a specific, enumerable list | J | 2 |
+| **verify-mode** | `verify-sections-present`: (upper-right cases) confident-about + double-check sections present | D | 1 |
+| | `uncertainty-separated`: facts, assumptions, unknowns separated and stated checkably | J | 1 |
+| **quality-mode** | `draft-before-alternatives`: (bottom-left cases) a draft artifact precedes any alternatives | D | 1 |
+| | `commits-to-quality`: commits to artifact quality; no unrequested verification apparatus | J | 1 |
+| **trivial** | `trivial-marker`: "matrix not applied" marker with a classification reason | D | 1 |
+| | `scaffold-absent`: no positioning statement, assumptions block, or options/recommendation sections | D | 1 |
+| | `trivial-reason`: the stated classification reason is specific and fits the request | J | 1 |
 
-Dimensions 5–6 are multi-turn: **last in build order, in scope for v1**.
-Dimensions 7–8 test the vertical (verify/quality) axis; check 1b tests only
-whether the quadrant was *named* correctly — 7–8 test whether the response
-body *behaves* top or bottom. Their cases enter as `xfail` (unproven
-behaviors) and earn gating status via the promotion rule in §4. Note 8a is
-also the only check that distinguishes the bottom-left template (draft-first)
-from upper-left (options-first); without it a bottom-left case could score
-perfectly on 3a–3c with a pure upper-left response.
-Dimension 9 is the negative test: its cases are labeled `quadrant: trivial`
-and pass by the framework *not* firing — marker present, scaffold absent.
-9b reuses the patterns of 1a/2a/3a–3c inverted (all must be absent). Without
-this dimension, silent skipping (the framework's quietest failure mode) is
-unmeasurable. Dimension 9 cases also enter as `xfail`.
+The check → dimension mapping is declared in `harness/checks.py` (`DIMENSIONS`).
+
+### Which checks apply to which cases
+
+| Case quadrant | Checks |
+|---|---|
+| upper-left | position-stated, position-correct, assumptions-present, assumptions-specific, options-listed, recommendation-given, next-prompt-given |
+| bottom-left | all upper-left checks + draft-before-alternatives, commits-to-quality |
+| upper-right | position-stated, position-correct, assumptions-present, assumptions-specific, single-artifact, verify-sections-present, uncertainty-separated |
+| bottom-right | position-stated, position-correct, assumptions-present, assumptions-specific, single-artifact, minimal-commentary, commits-to-quality |
+| trivial | trivial-marker, scaffold-absent, trivial-reason |
+| any multi-turn case | + movement-on-challenge and/or assumptions-on-demand |
+
+Notes on design intent:
+- **movement** and **spot-check** are multi-turn: last in build order, in scope for v1.
+- **verify-mode**/**quality-mode** test the vertical axis: `position-correct`
+  only tests whether the quadrant was *named* right; these test whether the
+  response body *behaves* top or bottom. `draft-before-alternatives` is also
+  the only check distinguishing the bottom-left template (draft-first) from
+  upper-left (options-first).
+- **trivial** is the negative test: cases pass by the framework *not* firing.
+  `scaffold-absent` is the inversion of the five scaffold checks. Without this
+  dimension, silent skipping (the quietest failure mode) is unmeasurable.
+- New-behavior cases enter as `xfail` and earn gating status via §4.
 
 ## 2. Dataset structure
 
@@ -68,7 +79,9 @@ One JSON file per case: `tests/cases/<id>.json` (golden set likewise JSON).
   "description": "Upper-left exploration prompt, expects plan-mode response",
   "quadrant": "upper-left",
   "turns": ["Deconstruct this topic into 5 key ideas I need to understand first: ..."],
-  "checks": ["1a", "1b", "2a", "2b", "3a", "3b", "3c"],
+  "checks": ["position-stated", "position-correct", "assumptions-present",
+             "assumptions-specific", "options-listed", "recommendation-given",
+             "next-prompt-given"],
   "status": "gating",
   "notes": "seeded from Sample-Prompts-by-Quadrant.md"
 }
@@ -81,7 +94,7 @@ Multi-turn cases list additional user turns; turn k is sent after response k−1
   Sample-Prompts-by-Quadrant.md plus realistic freeform requests (the sample
   prompts are best-practice phrasing; include messier prompts so we test the
   instructions, not the prompt quality).
-- Multi-turn cases added last: ~8 cases covering dimensions 5–6.
+- Multi-turn cases added last: ~8 cases covering movement and spot-check.
 - New cases always enter as `status: xfail` (TDD red). Promotion rule in §4.
 
 ### Arms
@@ -97,22 +110,22 @@ Arm A is expected to score near zero; its purpose is the **lift** number
 
 ## 3. Grader definitions
 
-### Layer 1 — deterministic (checks 1a, 2a, 3a–3c, 7a, 8a, 9a, 9b)
+### Layer 1 — deterministic (the 9 regex/structure checks in `harness/checks.py`)
 
 Plain-text/structure predicates, no model calls, run on every sample.
 Patterns are tolerant of phrasing but strict on substance, e.g.:
 
-- 1a: line matching `/operating from|position on the (matrix|continuum)/i`
-- 2a: `<assumptions>` tag pair, or a heading containing "assumption"
-- 3a: ≥2 clearly delineated options (table rows or labeled A/B/C)
-- 3b: heading/label matching `/recommend/i`
-- 3c: section matching `/next prompt/i` containing a quoted/blockquoted prompt
-- 7a: headings matching `/confident about/i` and `/double.check/i`
-- 8a: position of first draft/artifact heading < position of alternatives heading
-- 9a: line matching `/trivial\s*[—-]\s*matrix not applied/i` followed by a reason clause
-- 9b: patterns of 1a, 2a, 3a–3c all absent
+- position-stated: line matching `/operating from|position on the (matrix|continuum)/i`
+- assumptions-present: `<assumptions>` tag pair, or a heading containing "assumption"
+- options-listed: ≥2 clearly delineated options (table rows or labeled A/B/C)
+- recommendation-given: heading/label matching `/recommend/i`
+- next-prompt-given: section matching `/next prompt/i` containing a quoted/blockquoted prompt
+- verify-sections-present: headings matching `/confident about/i` and `/double.check/i`
+- draft-before-alternatives: first draft/artifact heading precedes the alternatives heading
+- trivial-marker: line matching `/trivial\s*[—-]\s*matrix not applied/i` followed by a reason clause
+- scaffold-absent: patterns of the five scaffold checks all absent
 
-### Layer 2 — LLM judge (checks 1b, 2b, 4a, 4b, 5a, 6a, 7b, 8b, 9c)
+### Layer 2 — LLM judge (the 9 criteria in `tests/judge-rubric.md`)
 
 - Judge model: cheapest current tier (Haiku), temperature 0.
 - **One judge call per (check, sample)** — each call poses a single binary
@@ -198,7 +211,7 @@ current Haiku pricing <!-- assumed: check current pricing -->; multi-turn adds
 2. Scoring, history, baseline, soft gate.
 3. Judge checks + golden set + calibration gate.
 4. GitHub Action + Pages dashboard.
-5. Multi-turn cases (dimensions 5–6).
+5. Multi-turn cases (movement + spot-check dimensions).
 
 Each step lands independently; the suite is useful from step 1.
 
@@ -209,6 +222,6 @@ Each step lands independently; the suite is useful from step 1.
   strictly better, behavior is possible. Periodic manual spot-runs on a larger
   model are the mitigation.
 - Deterministic checks can be satisfied by hollow compliance; the paired judge
-  checks (1b, 2b) exist to catch that.
+  checks (position-correct, assumptions-specific) exist to catch that.
 - N=5 keeps costs low but individual case scores are coarse (steps of 0.2);
   trust suite/dimension trends over single-case wiggles.

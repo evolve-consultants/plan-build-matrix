@@ -171,36 +171,36 @@ def test_run_sample_multi_turn_resumes(tmp_path):
 # --- grading + aggregation ----------------------------------------------------
 
 def test_grade_sample_runs_only_deterministic_checks():
-    case = {"id": "x", "turns": ["q"], "checks": ["1a", "1b", "2a"]}
+    case = {"id": "x", "turns": ["q"], "checks": ["position-stated", "position-correct", "assumptions-present"]}
     verdicts = grade_sample(case, "**Operating from: Upper-Left**")
-    assert set(verdicts) == {"1a", "2a"}   # 1b is a judge check: skipped without a judge
-    assert verdicts["1a"] is True
-    assert verdicts["2a"] is False
+    assert set(verdicts) == {"position-stated", "assumptions-present"}   # position-correct is a judge check: skipped without a judge
+    assert verdicts["position-stated"] is True
+    assert verdicts["assumptions-present"] is False
 
 
 def test_grade_sample_includes_judge_checks_when_judge_provided():
-    case = {"id": "x", "turns": ["q"], "checks": ["1a", "1b"]}
+    case = {"id": "x", "turns": ["q"], "checks": ["position-stated", "position-correct"]}
     judged = []
     def judge(check_id, c, response):
         judged.append(check_id)
         return True
     verdicts = grade_sample(case, "**Operating from: Upper-Left**", judge=judge)
-    assert verdicts == {"1a": True, "1b": True}
-    assert judged == ["1b"]
+    assert verdicts == {"position-stated": True, "position-correct": True}
+    assert judged == ["position-correct"]
 
 
 def test_run_suite_threads_judge_through(tmp_path):
-    case = {"id": "c1", "turns": ["q"], "checks": ["1b"], "status": "gating"}
+    case = {"id": "c1", "turns": ["q"], "checks": ["position-correct"], "status": "gating"}
     run = FakeRun([fake() for _ in range(2)])
     results = run_suite([case], n=1, model="haiku", repo_root=REPO_ROOT,
                         sandbox=tmp_path, run=run,
                         judge=lambda cid, c, r: True)
-    assert results["arms"]["B"]["c1"]["checks"]["1b"] == 1.0
+    assert results["arms"]["B"]["c1"]["checks"]["position-correct"] == 1.0
 
 
 def test_pass_fractions():
-    samples = [{"1a": True, "2a": True}, {"1a": True, "2a": False}, {"1a": False, "2a": False}]
-    assert pass_fractions(samples) == {"1a": pytest.approx(2 / 3), "2a": pytest.approx(1 / 3)}
+    samples = [{"position-stated": True, "assumptions-present": True}, {"position-stated": True, "assumptions-present": False}, {"position-stated": False, "assumptions-present": False}]
+    assert pass_fractions(samples) == {"position-stated": pytest.approx(2 / 3), "assumptions-present": pytest.approx(1 / 3)}
 
 
 # --- api runtime ---------------------------------------------------------------
@@ -271,7 +271,7 @@ def test_run_sample_api_multi_turn_accumulates_messages():
 
 
 def test_run_suite_api_arm_a_has_no_system_arm_b_has_instructions(tmp_path):
-    case = {"id": "c1", "turns": ["q"], "checks": ["1a"], "status": "gating"}
+    case = {"id": "c1", "turns": ["q"], "checks": ["position-stated"], "status": "gating"}
     client = FakeAPI(["r"] * 4)
     results = run_suite([case], n=2, model="haiku", repo_root=REPO_ROOT,
                         sandbox=tmp_path, runtime="api", client=client)
@@ -282,7 +282,7 @@ def test_run_suite_api_arm_a_has_no_system_arm_b_has_instructions(tmp_path):
 
 
 def test_run_suite_cli_results_note_runtime(tmp_path):
-    case = {"id": "c1", "turns": ["q"], "checks": ["1a"], "status": "gating"}
+    case = {"id": "c1", "turns": ["q"], "checks": ["position-stated"], "status": "gating"}
     run = FakeRun([fake() for _ in range(2)])
     results = run_suite([case], n=1, model="haiku", repo_root=REPO_ROOT,
                         sandbox=tmp_path, run=run)
@@ -292,18 +292,18 @@ def test_run_suite_cli_results_note_runtime(tmp_path):
 # --- run_suite + write_results -------------------------------------------------
 
 def test_run_suite_runs_both_arms(tmp_path):
-    case = {"id": "c1", "turns": ["q"], "checks": ["1a"], "status": "gating"}
+    case = {"id": "c1", "turns": ["q"], "checks": ["position-stated"], "status": "gating"}
     run = FakeRun([fake() for _ in range(4)])   # 2 arms x n=2
     results = run_suite([case], n=2, model="haiku", repo_root=REPO_ROOT,
                         sandbox=tmp_path, run=run)
     assert set(results["arms"]) == {"A", "B"}
-    assert results["arms"]["A"]["c1"]["checks"]["1a"] == 0.0   # "hello" has no scaffold
+    assert results["arms"]["A"]["c1"]["checks"]["position-stated"] == 0.0   # "hello" has no scaffold
     assert results["n"] == 2
     assert len(run.commands) == 4
 
 
 def test_run_suite_keeps_raw_samples(tmp_path):
-    case = {"id": "c1", "turns": ["q"], "checks": ["1a"], "status": "gating"}
+    case = {"id": "c1", "turns": ["q"], "checks": ["position-stated"], "status": "gating"}
     run = FakeRun([fake(result="resp-arm-a"), fake(result="resp-arm-b")])
     results = run_suite([case], n=1, model="haiku", repo_root=REPO_ROOT,
                         sandbox=tmp_path, run=run)
@@ -313,7 +313,7 @@ def test_run_suite_keeps_raw_samples(tmp_path):
 
 def test_write_transcripts_writes_files_and_rewrites_references(tmp_path):
     results = {"arms": {"A": {"c1": {"samples": ["hello world", "second try"],
-                                     "checks": {"1a": 0.0}}}}}
+                                     "checks": {"position-stated": 0.0}}}}}
     write_transcripts(results, transcripts_root=tmp_path, run_id="r1")
     assert (tmp_path / "r1" / "A-c1-0.md").read_text() == "hello world"
     assert (tmp_path / "r1" / "A-c1-1.md").read_text() == "second try"

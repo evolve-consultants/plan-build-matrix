@@ -7,6 +7,8 @@ suite score. Suite and gate use the gating set only; lift uses all cases.
 import json
 from pathlib import Path
 
+from checks import DIMENSIONS
+
 GATE_EPS_SUITE = 0.05
 GATE_EPS_DIMENSION = 0.10
 BASELINE_RUNS = 3
@@ -21,7 +23,7 @@ def dimension_scores(arm_results, gating_only=True):
     by_dim = {}
     for result in cases.values():
         for check_id, fraction in result["checks"].items():
-            by_dim.setdefault(check_id.rstrip("abcdefgh"), []).append(fraction)
+            by_dim.setdefault(DIMENSIONS[check_id], []).append(fraction)
     return {dim: sum(f) / len(f) for dim, f in sorted(by_dim.items())}
 
 

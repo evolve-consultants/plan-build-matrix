@@ -5,6 +5,6 @@
   "turns": [
     "My app feels slow sometimes and I think caching might help but I'm not sure where the problem is. What should I do?"
   ],
-  "checks": ["1a", "1b", "2a", "2b", "3a", "3b", "3c"],
+  "checks": ["position-stated", "position-correct", "assumptions-present", "assumptions-specific", "options-listed", "recommendation-given", "next-prompt-given"],
   "status": "gating"
 }
