@@ -183,9 +183,10 @@ def main():
     ap = argparse.ArgumentParser(description="Run the instruction eval suite.")
     ap.add_argument("--n", type=int, default=5, help="samples per case per arm")
     ap.add_argument("--model", default="haiku")
-    ap.add_argument("--runtime", choices=["api", "cli"], default="cli",
-                    help="api: raw messages API (cheap, no Claude Code harness); "
-                         "cli: claude -p (real-world conditions)")
+    ap.add_argument("--runtime", choices=["api", "cli"], default="api",
+                    help="api: raw messages API, instructions as system prompt "
+                         "(canonical, reproducible); cli: claude -p inside the "
+                         "Claude Code harness (manual/exploratory only)")
     ap.add_argument("--cases", default=repo_root / "tests" / "cases")
     ap.add_argument("--out", default=repo_root / "results")
     ap.add_argument("--transcripts", default=repo_root / "transcripts")

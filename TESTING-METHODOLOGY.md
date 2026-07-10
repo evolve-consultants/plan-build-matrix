@@ -1,13 +1,22 @@
 # Testing Methodology — Plan-Build Matrix Instructions
 
 Tool-agnostic spec for testing whether Claude, loaded with these instructions,
-exhibits the framework behaviors. Runtime is `claude -p` (real-world conditions).
-All checks are **binary pass/fail** — including LLM-as-judge checks. Continuous
-scores emerge only from pass fractions across repeated runs.
+exhibits the framework behaviors. All checks are **binary pass/fail** —
+including LLM-as-judge checks. Continuous scores emerge only from pass
+fractions across repeated runs.
 
 **Decision (2026-07-09): build, not buy.** The harness is a small purpose-built
 Python runner (see `samples/runner-pseudo.py` for shape); no eval framework
 dependency.
+
+**Decision (2026-07-10): canonical runtime is the raw messages API**, with the
+instructions as the system prompt. Rationale: reproducibility. `claude -p`
+carries Claude Code's own ~24k-token system prompt, which changes with every
+CLI release and differs across users' skills/custom instructions — scores
+would drift with the environment, not the instructions. The runner's `cli`
+mode is retained as a manual, out-of-band tool for studying exactly that
+environmental interference (blog material), and runtime-scoped baselines
+guarantee the two modes' scores are never compared.
 
 ## 1. Test dimensions
 
