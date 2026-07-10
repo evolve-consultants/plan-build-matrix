@@ -11,6 +11,7 @@ from types import SimpleNamespace
 
 from runner import (
     INSTRUCTION_FILES,
+    PacedClient,
     call_api,
     call_claude,
     grade_sample,
@@ -227,12 +228,15 @@ def test_instruction_system_prompt_concatenates_files():
     assert "Response Templates" in system
 
 
-def test_call_api_maps_model_alias_and_passes_system():
+def test_call_api_maps_model_alias_and_passes_cached_system():
     client = FakeAPI(["hi"])
     call_api([{"role": "user", "content": "q"}], "SYS", "haiku", client)
     kwargs = client.calls[0]
     assert kwargs["model"] == "claude-haiku-4-5-20251001"
-    assert kwargs["system"] == "SYS"
+    # system prompt is constant across calls: sent as a cacheable block so
+    # repeat calls count as cache reads (excluded from ITPM, 10x cheaper)
+    assert kwargs["system"] == [{"type": "text", "text": "SYS",
+                                 "cache_control": {"type": "ephemeral"}}]
 
 
 def test_call_api_omits_system_when_none():
@@ -250,6 +254,60 @@ def test_call_api_retries_on_429_then_succeeds():
                     sleep=naps.append)
     assert text == "recovered"
     assert len(naps) == 1
+
+
+def test_call_api_announces_backoff_visibly():
+    err = Exception("rate limited")
+    err.status_code = 429
+    client = FakeAPI([err, "ok"])
+    messages = []
+    call_api([{"role": "user", "content": "q"}], None, "haiku", client,
+             sleep=lambda _s: None, out=messages.append)
+    assert any("rate limit" in m.lower() for m in messages)
+
+
+def test_paced_client_enforces_min_interval_between_calls():
+    class Inner:
+        def __init__(self):
+            self.calls = 0
+            self.messages = self
+        def create(self, **kwargs):
+            self.calls += 1
+            return "resp"
+
+    inner = Inner()
+    clock = {"now": 100.0}
+    naps = []
+    paced = PacedClient(inner, interval=2.0,
+                        clock=lambda: clock["now"], sleep=naps.append)
+    paced.messages.create(model="m")            # first call: no wait
+    clock["now"] += 0.5
+    paced.messages.create(model="m")            # 1.5s too early
+    assert naps == [pytest.approx(1.5)]
+    assert inner.calls == 2
+
+
+def test_run_suite_emits_progress_lines(tmp_path):
+    case = {"id": "c1", "turns": ["q"], "checks": ["position-stated"], "status": "gating"}
+    run = FakeRun([fake(), fake()])
+    lines = []
+    run_suite([case], n=1, model="haiku", repo_root=REPO_ROOT,
+              sandbox=tmp_path, run=run, log=lines.append)
+    joined = "\n".join(lines)
+    assert "c1" in joined
+    assert "arm A" in joined and "arm B" in joined
+
+
+def test_run_suite_checkpoints_after_every_case(tmp_path):
+    cases = [{"id": "c1", "turns": ["q"], "checks": ["position-stated"], "status": "gating"},
+             {"id": "c2", "turns": ["q"], "checks": ["position-stated"], "status": "gating"}]
+    run = FakeRun([fake() for _ in range(4)])
+    sizes = []
+    run_suite(cases, n=1, model="haiku", repo_root=REPO_ROOT, sandbox=tmp_path,
+              run=run,
+              checkpoint=lambda r: sizes.append(
+                  sum(len(arm) for arm in r["arms"].values())))
+    assert sizes == [1, 2, 3, 4]   # called after each (arm, case) with growing results
 
 
 def test_call_api_raises_non_rate_limit_errors():
@@ -277,7 +335,7 @@ def test_run_suite_api_arm_a_has_no_system_arm_b_has_instructions(tmp_path):
                         sandbox=tmp_path, runtime="api", client=client)
     arm_a_calls, arm_b_calls = client.calls[:2], client.calls[2:]
     assert all("system" not in c for c in arm_a_calls)
-    assert all("Plan-Build Matrix" in c["system"] for c in arm_b_calls)
+    assert all("Plan-Build Matrix" in c["system"][0]["text"] for c in arm_b_calls)
     assert results["runtime"] == "api"
 
 

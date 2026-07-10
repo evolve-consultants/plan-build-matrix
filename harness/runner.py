@@ -10,6 +10,7 @@ global ~/.claude/CLAUDE.md (which contains these same instructions) cannot
 contaminate arm A. Only PATH and API credentials pass through.
 """
 import argparse
+import copy
 import json
 import os
 import shutil
@@ -85,17 +86,46 @@ def instruction_system_prompt(repo_root):
     return "\n\n".join((Path(repo_root) / f).read_text() for f in INSTRUCTION_FILES)
 
 
-def call_api(messages, system, model, client, sleep=time.sleep):
+class PacedClient:
+    """Wraps an anthropic client, enforcing a minimum interval between calls
+    so runs respect the org's requests-per-minute limit proactively instead
+    of discovering it one 429 at a time."""
+
+    def __init__(self, client, interval, clock=time.monotonic, sleep=time.sleep):
+        self._client = client
+        self._interval = interval
+        self._clock = clock
+        self._sleep = sleep
+        self._last = None
+        self.messages = self
+
+    def create(self, **kwargs):
+        now = self._clock()
+        if self._last is not None:
+            wait = self._last + self._interval - now
+            if wait > 0:
+                self._sleep(wait)
+                now += wait
+        self._last = now
+        return self._client.messages.create(**kwargs)
+
+
+def call_api(messages, system, model, client, sleep=time.sleep, out=print):
     kwargs = {"model": MODEL_IDS.get(model, model), "max_tokens": MAX_TOKENS,
               "messages": messages}
     if system:
-        kwargs["system"] = system
+        # constant across calls: cacheable, so repeats are cache reads
+        # (excluded from ITPM and 10x cheaper)
+        kwargs["system"] = [{"type": "text", "text": system,
+                             "cache_control": {"type": "ephemeral"}}]
     for attempt in range(RATE_LIMIT_RETRIES):
         try:
             resp = client.messages.create(**kwargs)
             return "".join(b.text for b in resp.content if b.type == "text")
         except Exception as e:
             if getattr(e, "status_code", None) == 429 and attempt < RATE_LIMIT_RETRIES - 1:
+                out(f"  rate limited (429): waiting {RATE_LIMIT_WAIT}s "
+                    f"(attempt {attempt + 1}/{RATE_LIMIT_RETRIES})")
                 sleep(RATE_LIMIT_WAIT)
                 continue
             raise
@@ -126,16 +156,18 @@ def pass_fractions(samples):
 
 
 def run_suite(cases, n, model, repo_root, sandbox, run=subprocess.run,
-              runtime="cli", client=None, judge=None):
+              runtime="cli", client=None, judge=None, log=None, checkpoint=None):
+    log = log or (lambda _msg: None)
     config_dir = Path(sandbox) / "claude-config"
     config_dir.mkdir(parents=True, exist_ok=True)
     env = isolated_env(config_dir)
     system_b = instruction_system_prompt(repo_root) if runtime == "api" else None
 
-    arms = {}
+    results = {"arms": {}, "n": n, "model": model, "runtime": runtime}
+    arms = results["arms"]
     for arm in ["A", "B"]:
         arms[arm] = {}
-        for case in cases:
+        for idx, case in enumerate(cases, 1):
             verdicts, responses = [], []
             for _ in range(n):
                 if runtime == "api":
@@ -147,14 +179,19 @@ def run_suite(cases, n, model, repo_root, sandbox, run=subprocess.run,
                 responses.append(response)
                 verdicts.append(grade_sample(case, response, judge=judge))
             fractions = pass_fractions(verdicts)
+            score = sum(fractions.values()) / len(fractions) if fractions else None
             arms[arm][case["id"]] = {
                 "checks": fractions,
-                "score": sum(fractions.values()) / len(fractions) if fractions else None,
+                "score": score,
                 "status": case.get("status"),
                 "samples": responses,
                 "sample_verdicts": verdicts,
             }
-    return {"arms": arms, "n": n, "model": model, "runtime": runtime}
+            log(f"[arm {arm} {idx}/{len(cases)}] {case['id']} "
+                f"score={score if score is None else round(score, 2)}")
+            if checkpoint:
+                checkpoint(results)
+    return results
 
 
 def write_transcripts(results, transcripts_root, run_id):
@@ -190,6 +227,9 @@ def main():
     ap = argparse.ArgumentParser(description="Run the instruction eval suite.")
     ap.add_argument("--n", type=int, default=5, help="samples per case per arm")
     ap.add_argument("--model", default="haiku")
+    ap.add_argument("--pace", type=float, default=1.5,
+                    help="min seconds between API calls; match your org's "
+                         "requests/min limit (free tier 5 rpm -> 12)")
     ap.add_argument("--judge", action="store_true",
                     help="enable LLM-judge checks (calibrates against "
                          "tests/golden/ first; aborts below 90% agreement)")
@@ -209,7 +249,7 @@ def main():
     client = None
     if args.runtime == "api" or args.judge:
         import anthropic
-        client = anthropic.Anthropic()
+        client = PacedClient(anthropic.Anthropic(), interval=args.pace)
 
     cases = load_cases(args.cases)
 
@@ -225,11 +265,21 @@ def main():
                              "run aborted as untrustworthy")
         judge_fn = make_judge(client)
 
+    sha = _git_sha(repo_root)
+    run_id = f"{time.strftime('%Y%m%d-%H%M%S')}-{sha}"
+
+    def save_progress(partial):
+        # a crash loses nothing: transcripts + partial results land per case
+        snapshot = copy.deepcopy(partial)
+        write_transcripts(snapshot, transcripts_root=args.transcripts, run_id=run_id)
+        write_results(snapshot, out_dir=args.out, run_id=run_id)
+
     results = run_suite(cases, n=args.n, model=args.model,
                         repo_root=repo_root, sandbox=sandbox,
-                        runtime=args.runtime, client=client, judge=judge_fn)
+                        runtime=args.runtime, client=client, judge=judge_fn,
+                        log=print, checkpoint=save_progress)
     results["judge_calibration"] = calibration
-    results["instructions_sha"] = _git_sha(repo_root)
+    results["instructions_sha"] = sha
     results["timestamp"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
     summary = summarize(results)
@@ -239,7 +289,6 @@ def main():
     results["summary"] = summary
     results["gate"] = {"ok": gate_ok, "reasons": reasons, "baseline": base}
 
-    run_id = f"{time.strftime('%Y%m%d-%H%M%S')}-{results['instructions_sha']}"
     write_transcripts(results, transcripts_root=args.transcripts, run_id=run_id)
     path = write_results(results, out_dir=args.out, run_id=run_id)
     append_history(history_path, {
