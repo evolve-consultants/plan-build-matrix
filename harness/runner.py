@@ -39,6 +39,10 @@ def load_env(path=ENV_FILE):
     load_dotenv(path)
 
 
+def env_or(name, fallback):
+    return os.environ.get(name) or fallback
+
+
 def load_cases(cases_dir):
     cases = [json.loads(p.read_text()) for p in Path(cases_dir).glob("*.json")]
     return sorted(cases, key=lambda c: c["id"])
@@ -241,8 +245,9 @@ def main():
     load_env()
     repo_root = Path(__file__).resolve().parent.parent
     ap = argparse.ArgumentParser(description="Run the instruction eval suite.")
-    ap.add_argument("--n", type=int, default=5, help="samples per case per arm")
-    ap.add_argument("--model", default="haiku")
+    ap.add_argument("--n", type=int, default=5, help="samples per case per condition")
+    ap.add_argument("--model", default=env_or("PBM_MODEL", "haiku"),
+                    help="subject model (env: PBM_MODEL; judge model via PBM_JUDGE_MODEL)")
     ap.add_argument("--pace", type=float, default=1.5,
                     help="min seconds between API calls; match your org's "
                          "requests/min limit (free tier 5 rpm -> 12)")

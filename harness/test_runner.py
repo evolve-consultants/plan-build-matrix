@@ -95,6 +95,26 @@ def test_isolated_env_passes_api_key_and_path(tmp_path, monkeypatch):
     assert env["PATH"] == os.environ["PATH"]
 
 
+# --- env-configurable models ---------------------------------------------------
+
+def test_env_or_prefers_environment(monkeypatch):
+    from runner import env_or
+    monkeypatch.setenv("PBM_MODEL", "sonnet")
+    assert env_or("PBM_MODEL", "haiku") == "sonnet"
+
+
+def test_env_or_falls_back_when_unset(monkeypatch):
+    from runner import env_or
+    monkeypatch.delenv("PBM_MODEL", raising=False)
+    assert env_or("PBM_MODEL", "haiku") == "haiku"
+
+
+def test_env_or_ignores_empty_string(monkeypatch):
+    from runner import env_or
+    monkeypatch.setenv("PBM_MODEL", "")
+    assert env_or("PBM_MODEL", "haiku") == "haiku"
+
+
 # --- load_env ----------------------------------------------------------------
 
 def test_load_env_reads_api_key_from_file(tmp_path, monkeypatch):

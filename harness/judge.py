@@ -7,13 +7,21 @@ runner). One judge call per (check, sample); binary verdict; anything that
 is not a clean "pass" — including unparseable output — is a fail.
 """
 import json
+import os
 import re
 from pathlib import Path
 
+from runner import MODEL_IDS
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RUBRIC_FILE = REPO_ROOT / "tests" / "judge-rubric.md"
-JUDGE_MODEL = "claude-haiku-4-5-20251001"
+DEFAULT_JUDGE_MODEL = "claude-haiku-4-5-20251001"
 JUDGE_MAX_TOKENS = 200
+
+
+def judge_model():
+    m = os.environ.get("PBM_JUDGE_MODEL") or DEFAULT_JUDGE_MODEL
+    return MODEL_IDS.get(m, m)
 
 _FRAME = re.compile(r"```\n(.*?)```", re.S)
 _CRITERION = re.compile(r"^### ([\w-]+) — .*?\n(.*?)(?=^### |\Z)", re.M | re.S)
@@ -43,7 +51,7 @@ def build_prompt(rubric, check_id, case, response):
 
 def judge_check(rubric, check_id, case, response, client):
     resp = client.messages.create(
-        model=JUDGE_MODEL,
+        model=judge_model(),
         max_tokens=JUDGE_MAX_TOKENS,
         messages=[{"role": "user",
                    "content": build_prompt(rubric, check_id, case, response)}],

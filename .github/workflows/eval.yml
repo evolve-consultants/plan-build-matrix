@@ -43,6 +43,9 @@ jobs:
         continue-on-error: true   # gate failure must not block persisting results
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # set repo Variables to override models without code changes
+          PBM_MODEL: ${{ vars.PBM_MODEL }}
+          PBM_JUDGE_MODEL: ${{ vars.PBM_JUDGE_MODEL }}
         run: |
           uv run python harness/runner.py --judge \
             --runtime "${{ inputs.runtime || 'api' }}" --n "${{ inputs.n || '5' }}"

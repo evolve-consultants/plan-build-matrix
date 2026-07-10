@@ -69,6 +69,20 @@ def test_make_judge_binds_client():
     assert judge("position-correct", CASE, "resp") is True
 
 
+def test_judge_model_configurable_via_env(monkeypatch):
+    monkeypatch.setenv("PBM_JUDGE_MODEL", "sonnet")
+    client = FakeAPI([verdict("pass")])
+    judge_check(parse_rubric(), "position-correct", CASE, "resp", client)
+    assert client.calls[0]["model"] == "claude-sonnet-5"   # alias resolved
+
+
+def test_judge_model_defaults_to_haiku(monkeypatch):
+    monkeypatch.delenv("PBM_JUDGE_MODEL", raising=False)
+    client = FakeAPI([verdict("pass")])
+    judge_check(parse_rubric(), "position-correct", CASE, "resp", client)
+    assert "haiku" in client.calls[0]["model"]
+
+
 # --- golden set + calibration -----------------------------------------------------
 
 def test_load_golden_skips_items_not_operator_labeled(tmp_path):
