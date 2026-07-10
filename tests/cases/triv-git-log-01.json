@@ -10,5 +10,5 @@
   "turns": [
     "What's the git command to show the last 5 commits, one line each?"
   ],
-  "status": "xfail"
+  "status": "gating"
 }

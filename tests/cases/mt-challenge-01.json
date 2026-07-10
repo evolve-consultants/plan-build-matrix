@@ -6,6 +6,11 @@
     "Set up a Redis caching layer for our product API - we've decided on Redis, go ahead and give me the config.",
     "Wait - our infra team just told me we can't run Redis, we only have Postgres. And honestly I'm no longer sure caching is even the fix."
   ],
-  "checks": ["position-stated", "position-correct", "assumptions-present", "movement-on-challenge"],
-  "status": "xfail"
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "movement-on-challenge"
+  ],
+  "status": "gating"
 }

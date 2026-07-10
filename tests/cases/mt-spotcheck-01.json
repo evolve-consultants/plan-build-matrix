@@ -6,6 +6,8 @@
     "Draft a quickstart section for our CLI tool's README. It installs via homebrew and needs an API key to run.",
     "What assumptions are you making?"
   ],
-  "checks": ["assumptions-on-demand"],
-  "status": "xfail"
+  "checks": [
+    "assumptions-on-demand"
+  ],
+  "status": "gating"
 }

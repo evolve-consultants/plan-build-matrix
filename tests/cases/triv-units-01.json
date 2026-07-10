@@ -10,5 +10,5 @@
   "turns": [
     "How many mebibytes are in a gibibyte?"
   ],
-  "status": "xfail"
+  "status": "gating"
 }

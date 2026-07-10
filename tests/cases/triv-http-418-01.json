@@ -10,5 +10,5 @@
   "turns": [
     "What does HTTP status code 418 mean?"
   ],
-  "status": "xfail"
+  "status": "gating"
 }

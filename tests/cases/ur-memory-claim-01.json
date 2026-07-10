@@ -14,5 +14,5 @@
   "turns": [
     "Summarize how API rate limits typically work for LLM providers (tiers, tokens per minute, retry headers), clearly marking what's general knowledge versus what I should verify for a specific provider."
   ],
-  "status": "xfail"
+  "status": "gating"
 }
