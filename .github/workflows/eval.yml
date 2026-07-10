@@ -42,6 +42,7 @@ jobs:
         id: eval
         continue-on-error: true   # gate failure must not block persisting results
         env:
+          PYTHONUNBUFFERED: "1"   # no TTY in CI: without this, progress lines sit in the block buffer
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           # set repo Variables to override models without code changes
           PBM_MODEL: ${{ vars.PBM_MODEL }}
