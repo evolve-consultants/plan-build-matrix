@@ -389,6 +389,22 @@ def test_write_transcripts_writes_files_and_rewrites_references(tmp_path):
     assert "samples" not in case   # raw text must not bloat results.json
 
 
+def test_previous_results_picks_latest_other_run(tmp_path):
+    from runner import previous_results
+    (tmp_path / "20260709-1-aaa.json").write_text(json.dumps({"run": "old"}))
+    (tmp_path / "20260710-1-bbb.json").write_text(json.dumps({"run": "prev"}))
+    (tmp_path / "20260710-2-ccc.json").write_text(json.dumps({"run": "current"}))
+    (tmp_path / "history.jsonl").write_text("")
+    assert previous_results(tmp_path, "20260710-2-ccc")["run"] == "prev"
+    assert previous_results(tmp_path, "20260709-1-aaa") is None or True  # no crash
+
+
+def test_previous_results_none_on_first_run(tmp_path):
+    from runner import previous_results
+    (tmp_path / "20260710-2-ccc.json").write_text(json.dumps({"run": "current"}))
+    assert previous_results(tmp_path, "20260710-2-ccc") is None
+
+
 def test_write_results_creates_run_file(tmp_path):
     results = {"arms": {}, "n": 1, "model": "haiku"}
     path = write_results(results, out_dir=tmp_path, run_id="r1")

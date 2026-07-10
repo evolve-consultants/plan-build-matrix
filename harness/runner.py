@@ -215,6 +215,22 @@ def write_results(results, out_dir, run_id):
     return path
 
 
+def previous_results(out_dir, current_run_id):
+    runs = sorted(p for p in Path(out_dir).glob("*.json")
+                  if p.stem != current_run_id)
+    return json.loads(runs[-1].read_text()) if runs else None
+
+
+def _compare_url(repo_root, prev_sha, sha):
+    proc = subprocess.run(["git", "remote", "get-url", "origin"],
+                          cwd=repo_root, capture_output=True, text=True)
+    url = proc.stdout.strip()
+    if not (url and prev_sha and sha):
+        return None
+    url = url.removesuffix(".git").replace("git@github.com:", "https://github.com/")
+    return f"{url}/compare/{prev_sha}..{sha}"
+
+
 def _git_sha(repo_root):
     proc = subprocess.run(["git", "rev-parse", "--short", "HEAD"],
                           cwd=repo_root, capture_output=True, text=True)
@@ -302,7 +318,17 @@ def main():
         "gate": gate_ok,
     })
 
+    from report import render_report
+    history = load_history(history_path)
+    prev = previous_results(args.out, run_id)
+    prev_sha = history[-2]["sha"] if len(history) >= 2 else None
+    report_path = Path(args.out) / "report.html"
+    report_path.write_text(render_report(
+        results, history, prev_results=prev,
+        compare_url=_compare_url(repo_root, prev_sha, sha)))
+
     print(f"wrote {path}")
+    print(f"wrote {report_path}")
     print(f"suite {summary['suite']}, lift {summary['lift']}, gate {'PASS' if gate_ok else 'FAIL'}")
     for reason in reasons:
         print(f"  {reason}")

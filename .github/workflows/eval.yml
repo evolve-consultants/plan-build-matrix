@@ -1,18 +1,18 @@
 # Eval run skeleton: executes the instruction eval and persists results,
 # transcripts, and history to the `data` branch (which GitHub Pages serves).
 #
-# Manual trigger only for now — switch `on:` to `push: {branches: [main]}`
-# once the API tier supports full runs and the report renderer exists.
 name: eval
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       n:
-        description: samples per case per arm
+        description: samples per case per condition
         default: "5"
       runtime:
-        description: api (cheap) or cli (real-world, needs higher API tier)
+        description: api (canonical) or cli (manual experiments only)
         default: api
 
 permissions:
@@ -44,14 +44,15 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          uv run python harness/runner.py \
-            --runtime "${{ inputs.runtime }}" --n "${{ inputs.n }}"
+          uv run python harness/runner.py --judge \
+            --runtime "${{ inputs.runtime || 'api' }}" --n "${{ inputs.n || '5' }}"
 
       - name: persist to data branch
         run: |
           mkdir -p data/results data/transcripts
           cp -R results/. data/results/
           cp -R transcripts/. data/transcripts/ 2>/dev/null || true
+          cp results/report.html data/index.html 2>/dev/null || true
           cd data
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
