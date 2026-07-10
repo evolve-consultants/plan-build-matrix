@@ -99,6 +99,15 @@ def test_baseline_runtime_filter_with_no_matches_is_none():
     assert baseline([{"suite": 0.9, "dimensions": {}, "runtime": "cli"}], runtime="api") is None
 
 
+def test_baseline_filters_by_model():
+    history = [
+        {"suite": 0.5, "dimensions": {}, "runtime": "api", "model": "haiku"},
+        {"suite": 0.9, "dimensions": {}, "runtime": "api", "model": "sonnet"},
+    ]
+    assert baseline(history, runtime="api", model="haiku")["suite"] == 0.5
+    assert baseline(history, runtime="api", model="opus") is None
+
+
 # --- gate ----------------------------------------------------------------------
 
 def test_gate_passes_without_baseline():

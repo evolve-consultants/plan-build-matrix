@@ -305,7 +305,7 @@ def main():
 
     summary = summarize(results)
     history_path = Path(args.out) / "history.jsonl"
-    base = baseline(load_history(history_path), runtime=args.runtime)
+    base = baseline(load_history(history_path), runtime=args.runtime, model=args.model)
     gate_ok, reasons = evaluate_gate(summary, base)
     results["summary"] = summary
     results["gate"] = {"ok": gate_ok, "reasons": reasons, "baseline": base}
@@ -315,6 +315,7 @@ def main():
     append_history(history_path, {
         "run_id": run_id,
         "runtime": args.runtime,
+        "model": args.model,
         "sha": results["instructions_sha"],
         "timestamp": results["timestamp"],
         "suite": summary["suite"],

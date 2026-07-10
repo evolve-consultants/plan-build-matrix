@@ -63,10 +63,13 @@ def append_history(path, entry):
         f.write(json.dumps(entry) + "\n")
 
 
-def baseline(history, last=BASELINE_RUNS, runtime=None):
-    # scores from different runtimes (api vs cli) are never comparable
+def baseline(history, last=BASELINE_RUNS, runtime=None, model=None):
+    # scores from different runtimes (api vs cli) or different subject
+    # models are never comparable
     if runtime is not None:
         history = [h for h in history if h.get("runtime") == runtime]
+    if model is not None:
+        history = [h for h in history if h.get("model", "haiku") == model]
     if not history:
         return None
     window = history[-last:]
