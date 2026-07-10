@@ -1,0 +1,18 @@
+{
+  "id": "ur-sql-migration-01",
+  "quadrant": "upper-right",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "single-artifact",
+    "verify-sections-present",
+    "uncertainty-separated"
+  ],
+  "description": "migration with double-check expectations",
+  "turns": [
+    "Write the SQL migration to add a nullable archived_at timestamp to the projects table and backfill it for rows older than two years. Note what I should double-check before running it."
+  ],
+  "status": "xfail"
+}

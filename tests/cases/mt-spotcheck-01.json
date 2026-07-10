@@ -1,0 +1,11 @@
+{
+  "id": "mt-spotcheck-01",
+  "description": "multi-turn: after a drafting task, the operator runs the spot check - expected response is an enumerable, conversation-specific assumption list",
+  "quadrant": "bottom-left",
+  "turns": [
+    "Draft a quickstart section for our CLI tool's README. It installs via homebrew and needs an API key to run.",
+    "What assumptions are you making?"
+  ],
+  "checks": ["assumptions-on-demand"],
+  "status": "xfail"
+}

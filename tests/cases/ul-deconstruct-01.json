@@ -1,0 +1,17 @@
+{
+  "id": "ul-deconstruct-01",
+  "quadrant": "upper-left",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "recommendation-given",
+    "next-prompt-given"
+  ],
+  "description": "clean best-practice exploration prompt; options-listed not required (a sorted idea list is the artifact, not an A/B/C choice set) but recommendation + next prompt still required per Behavioral Rule 1",
+  "turns": [
+    "Deconstruct the topic of adding offline support to our web app into 5 key ideas I need to understand first, sorted from most foundational to most advanced."
+  ],
+  "status": "xfail"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "br-error-message-01",
+  "quadrant": "bottom-right",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "single-artifact",
+    "minimal-commentary",
+    "commits-to-quality"
+  ],
+  "description": "one-sentence copy, tight constraints",
+  "turns": [
+    "Write the user-facing error message for a failed payment: apologetic, exactly one sentence, no technical jargon, suggests retrying."
+  ],
+  "status": "xfail"
+}

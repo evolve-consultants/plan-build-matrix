@@ -1,0 +1,18 @@
+{
+  "id": "br-haiku-01",
+  "quadrant": "bottom-right",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "single-artifact",
+    "minimal-commentary",
+    "commits-to-quality"
+  ],
+  "description": "creative but fully constrained",
+  "turns": [
+    "Write a haiku about code review. Traditional 5-7-5. Just the haiku."
+  ],
+  "status": "xfail"
+}

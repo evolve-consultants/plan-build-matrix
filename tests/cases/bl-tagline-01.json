@@ -1,0 +1,20 @@
+{
+  "id": "bl-tagline-01",
+  "quadrant": "bottom-left",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "options-listed",
+    "recommendation-given",
+    "next-prompt-given",
+    "draft-before-alternatives",
+    "commits-to-quality"
+  ],
+  "description": "short-form creative with alternates expected",
+  "turns": [
+    "We need a tagline for an open-source project about assumption alignment between developers and AI assistants. Give me a first pass I can react to."
+  ],
+  "status": "xfail"
+}

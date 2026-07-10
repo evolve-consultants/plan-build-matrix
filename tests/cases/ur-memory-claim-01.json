@@ -1,0 +1,18 @@
+{
+  "id": "ur-memory-claim-01",
+  "quadrant": "upper-right",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "single-artifact",
+    "verify-sections-present",
+    "uncertainty-separated"
+  ],
+  "description": "factual summary where memory vs verified must be separated",
+  "turns": [
+    "Summarize how API rate limits typically work for LLM providers (tiers, tokens per minute, retry headers), clearly marking what's general knowledge versus what I should verify for a specific provider."
+  ],
+  "status": "xfail"
+}

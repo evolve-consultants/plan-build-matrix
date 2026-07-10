@@ -1,0 +1,14 @@
+{
+  "id": "triv-units-01",
+  "quadrant": "trivial",
+  "checks": [
+    "trivial-marker",
+    "scaffold-absent",
+    "trivial-reason"
+  ],
+  "description": "unit conversion fact",
+  "turns": [
+    "How many mebibytes are in a gibibyte?"
+  ],
+  "status": "xfail"
+}

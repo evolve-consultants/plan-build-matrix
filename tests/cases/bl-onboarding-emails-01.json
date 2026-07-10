@@ -1,0 +1,20 @@
+{
+  "id": "bl-onboarding-emails-01",
+  "quadrant": "bottom-left",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "options-listed",
+    "recommendation-given",
+    "next-prompt-given",
+    "draft-before-alternatives",
+    "commits-to-quality"
+  ],
+  "description": "multi-part content draft",
+  "turns": [
+    "Rough out a 3-email onboarding sequence for trial users of our scheduling app. I know the product; give me something to shape."
+  ],
+  "status": "xfail"
+}

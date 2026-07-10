@@ -1,0 +1,14 @@
+{
+  "id": "triv-http-418-01",
+  "quadrant": "trivial",
+  "checks": [
+    "trivial-marker",
+    "scaffold-absent",
+    "trivial-reason"
+  ],
+  "description": "single-fact lookup",
+  "turns": [
+    "What does HTTP status code 418 mean?"
+  ],
+  "status": "xfail"
+}

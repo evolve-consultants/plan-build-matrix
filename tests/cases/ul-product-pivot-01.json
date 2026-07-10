@@ -1,0 +1,18 @@
+{
+  "id": "ul-product-pivot-01",
+  "quadrant": "upper-left",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "options-listed",
+    "recommendation-given",
+    "next-prompt-given"
+  ],
+  "description": "vague business direction question",
+  "turns": [
+    "I'm thinking about turning my consultancy's internal tooling into a product. Where do I even start?"
+  ],
+  "status": "xfail"
+}

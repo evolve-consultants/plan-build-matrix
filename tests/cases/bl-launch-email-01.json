@@ -1,0 +1,20 @@
+{
+  "id": "bl-launch-email-01",
+  "quadrant": "bottom-left",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "options-listed",
+    "recommendation-given",
+    "next-prompt-given",
+    "draft-before-alternatives",
+    "commits-to-quality"
+  ],
+  "description": "draft to react to; operator owns facts",
+  "turns": [
+    "Draft a launch announcement email for our new booking feature. I know the product inside out \u2014 I just need a strong draft to react to. Tone: confident, not salesy."
+  ],
+  "status": "xfail"
+}

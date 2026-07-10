@@ -1,0 +1,18 @@
+{
+  "id": "ur-cron-backup-01",
+  "quadrant": "upper-right",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "single-artifact",
+    "verify-sections-present",
+    "uncertainty-separated"
+  ],
+  "description": "small artifact, environment assumptions matter",
+  "turns": [
+    "Write a crontab entry that runs /opt/scripts/backup.sh at 02:30 every weekday. Spell out any assumptions about the environment."
+  ],
+  "status": "xfail"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "ul-vague-fix-01",
+  "quadrant": "upper-left",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "options-listed",
+    "recommendation-given",
+    "next-prompt-given"
+  ],
+  "description": "trap: imperative phrasing but too many assumptions required for a fix - correct read is exploration, not execution",
+  "turns": [
+    "Users keep complaining our dashboard is confusing. Fix it."
+  ],
+  "status": "xfail"
+}

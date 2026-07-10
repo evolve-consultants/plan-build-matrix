@@ -1,0 +1,20 @@
+{
+  "id": "bl-readme-intro-01",
+  "quadrant": "bottom-left",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "options-listed",
+    "recommendation-given",
+    "next-prompt-given",
+    "draft-before-alternatives",
+    "commits-to-quality"
+  ],
+  "description": "rewrite draft; operator will fact-check",
+  "turns": [
+    "Our project README opens with a wall of dry text. Draft a friendlier intro section \u2014 I'll fact-check the details myself."
+  ],
+  "status": "xfail"
+}

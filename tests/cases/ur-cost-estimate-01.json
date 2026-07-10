@@ -1,0 +1,18 @@
+{
+  "id": "ur-cost-estimate-01",
+  "quadrant": "upper-right",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "single-artifact",
+    "verify-sections-present",
+    "uncertainty-separated"
+  ],
+  "description": "arithmetic the operator wants to check",
+  "turns": [
+    "Estimate the monthly API cost of running a test suite daily: 28 prompts, 5 samples each, 2 conditions, ~1000 output tokens per response, on the cheapest Claude model. Show your arithmetic so I can check it."
+  ],
+  "status": "xfail"
+}

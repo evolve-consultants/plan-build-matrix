@@ -1,0 +1,20 @@
+{
+  "id": "bl-blog-outline-01",
+  "quadrant": "bottom-left",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "options-listed",
+    "recommendation-given",
+    "next-prompt-given",
+    "draft-before-alternatives",
+    "commits-to-quality"
+  ],
+  "description": "outline draft, direction still open",
+  "turns": [
+    "I want to write a blog post about why we moved away from microservices. Sketch an outline I can react to."
+  ],
+  "status": "xfail"
+}

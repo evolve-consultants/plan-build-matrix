@@ -1,0 +1,18 @@
+{
+  "id": "ul-data-mess-01",
+  "quadrant": "upper-left",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "options-listed",
+    "recommendation-given",
+    "next-prompt-given"
+  ],
+  "description": "messy data-architecture problem, unknown constraints",
+  "turns": [
+    "We have customer data spread across four systems and none of them agree with each other. What should I do?"
+  ],
+  "status": "xfail"
+}

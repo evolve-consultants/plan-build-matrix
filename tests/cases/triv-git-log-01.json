@@ -1,0 +1,14 @@
+{
+  "id": "triv-git-log-01",
+  "quadrant": "trivial",
+  "checks": [
+    "trivial-marker",
+    "scaffold-absent",
+    "trivial-reason"
+  ],
+  "description": "single-command lookup",
+  "turns": [
+    "What's the git command to show the last 5 commits, one line each?"
+  ],
+  "status": "xfail"
+}

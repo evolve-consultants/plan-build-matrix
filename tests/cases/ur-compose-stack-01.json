@@ -1,0 +1,18 @@
+{
+  "id": "ur-compose-stack-01",
+  "quadrant": "upper-right",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "single-artifact",
+    "verify-sections-present",
+    "uncertainty-separated"
+  ],
+  "description": "config artifact with explicit verify-me framing",
+  "turns": [
+    "Write a docker-compose.yml for a dev stack: Postgres 16 and Redis 7, standard ports, persistent volume for Postgres. Flag anything you assume."
+  ],
+  "status": "xfail"
+}

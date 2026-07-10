@@ -57,6 +57,11 @@ The check → dimension mapping is declared in `harness/checks.py` (`DIMENSIONS`
 | trivial | trivial-marker, scaffold-absent, trivial-reason |
 | any multi-turn case | + movement-on-challenge and/or assumptions-on-demand |
 
+**Tailoring rule**: cases get their quadrant's checks by default. A case may
+deviate only when the quadrant formula would punish a correct response, and
+the justification must be written into the case's `description` field —
+undocumented deviations are treated as review failures.
+
 Notes on design intent:
 - **movement** and **spot-check** are multi-turn: last in build order, in scope for v1.
 - **verify-mode**/**quality-mode** test the vertical axis: `position-correct`

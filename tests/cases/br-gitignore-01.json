@@ -1,0 +1,18 @@
+{
+  "id": "br-gitignore-01",
+  "quadrant": "bottom-right",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "single-artifact",
+    "minimal-commentary",
+    "commits-to-quality"
+  ],
+  "description": "known-content artifact, final form",
+  "turns": [
+    "Write a .gitignore covering Python, Node, and macOS, with a comment above each section. Final form, nothing else."
+  ],
+  "status": "xfail"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "ur-date-validator-01",
+  "quadrant": "upper-right",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "single-artifact",
+    "verify-sections-present",
+    "uncertainty-separated"
+  ],
+  "description": "code artifact with checkable edge cases",
+  "turns": [
+    "Write a Python function that validates strict ISO-8601 dates (YYYY-MM-DD only, real calendar dates). List the edge cases you handled so I can verify."
+  ],
+  "status": "xfail"
+}

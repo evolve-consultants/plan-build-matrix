@@ -1,0 +1,10 @@
+{
+  "id": "bl-code-draft-01",
+  "description": "code draft where operator owns behavioral verification; quality focus is shape/naming/interface",
+  "quadrant": "bottom-left",
+  "turns": [
+    "Sketch a first-pass Python client class for our internal metrics API (it accepts counters and timings over HTTP). I'll test the behavior myself - I want something to react to on shape, naming, and interface."
+  ],
+  "checks": ["position-stated", "position-correct", "assumptions-present", "assumptions-specific", "options-listed", "recommendation-given", "next-prompt-given", "draft-before-alternatives", "commits-to-quality"],
+  "status": "xfail"
+}

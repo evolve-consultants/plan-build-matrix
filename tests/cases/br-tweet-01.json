@@ -1,0 +1,18 @@
+{
+  "id": "br-tweet-01",
+  "quadrant": "bottom-right",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "single-artifact",
+    "minimal-commentary",
+    "commits-to-quality"
+  ],
+  "description": "constrained short-form, final",
+  "turns": [
+    "Write a single tweet (max 280 chars) announcing our v2.0 release is live. Include the placeholder {URL}. No hashtags, no emoji."
+  ],
+  "status": "xfail"
+}

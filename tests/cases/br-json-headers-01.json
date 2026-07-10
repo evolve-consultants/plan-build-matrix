@@ -1,0 +1,18 @@
+{
+  "id": "br-json-headers-01",
+  "quadrant": "bottom-right",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "single-artifact",
+    "minimal-commentary",
+    "commits-to-quality"
+  ],
+  "description": "deterministic conversion",
+  "turns": [
+    "Convert these CSV headers to a JSON array of snake_case strings, final form: First Name, Last Name, Email Address, Signup Date, Last Login"
+  ],
+  "status": "xfail"
+}

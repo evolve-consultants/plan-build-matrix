@@ -1,0 +1,18 @@
+{
+  "id": "ul-team-split-01",
+  "quadrant": "upper-left",
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "options-listed",
+    "recommendation-given",
+    "next-prompt-given"
+  ],
+  "description": "contested technical decision, no context given",
+  "turns": [
+    "Half my team wants to move our REST API to GraphQL and half thinks it's a waste of time. What should we do?"
+  ],
+  "status": "xfail"
+}
