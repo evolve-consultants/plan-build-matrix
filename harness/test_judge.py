@@ -71,20 +71,34 @@ def test_make_judge_binds_client():
 
 # --- golden set + calibration -----------------------------------------------------
 
-def test_load_golden_reads_seed():
-    golden = load_golden(REPO_ROOT / "tests" / "golden")
-    assert len(golden) >= 4
-    assert all({"case_id", "check", "response_excerpt", "label"} <= set(g) for g in golden)
+def test_load_golden_skips_items_not_operator_labeled(tmp_path):
+    import json
+    items = [
+        {"case_id": "c1", "check": "position-correct", "response": "r1",
+         "label": "pass", "labeled_by": "operator"},
+        {"case_id": "c1", "check": "position-correct", "response": "r2",
+         "label": "fail", "labeled_by": None},          # proposed, unapproved
+        {"case_id": "c1", "check": "assumptions-specific", "response": "r3",
+         "label": "pass"},                               # field missing entirely
+    ]
+    (tmp_path / "golden.json").write_text(json.dumps(items))
+    golden = load_golden(tmp_path)
+    assert len(golden) == 1   # only the operator-labeled item counts
+    assert golden[0]["response"] == "r1"
 
 
 def test_calibrate_agreement_fraction():
     golden = [
-        {"case_id": "c1", "check": "position-correct", "response_excerpt": "r1", "label": "pass"},
-        {"case_id": "c1", "check": "position-correct", "response_excerpt": "r2", "label": "fail"},
-        {"case_id": "c1", "check": "assumptions-specific", "response_excerpt": "r3", "label": "pass"},
-        {"case_id": "c1", "check": "assumptions-specific", "response_excerpt": "r4", "label": "fail"},
+        {"case_id": "c1", "check": "position-correct", "response": "r1", "label": "pass"},
+        {"case_id": "c1", "check": "position-correct", "response": "r2", "label": "fail"},
+        {"case_id": "c1", "check": "assumptions-specific", "response": "r3", "label": "pass"},
+        {"case_id": "c1", "check": "assumptions-specific", "response": "r4", "label": "fail"},
     ]
     cases = {"c1": CASE}
     # judge agrees on first three, disagrees on the fourth
     client = FakeAPI([verdict("pass"), verdict("fail"), verdict("pass"), verdict("pass")])
     assert calibrate(golden, cases, client) == pytest.approx(0.75)
+
+
+def test_calibrate_with_no_labeled_items_is_zero():
+    assert calibrate([], {}, FakeAPI([])) == 0.0

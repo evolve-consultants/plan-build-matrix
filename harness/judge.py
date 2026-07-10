@@ -65,17 +65,21 @@ def make_judge(client, rubric=None):
 
 
 def load_golden(golden_dir):
+    # only items whose label a human has certified may calibrate the judge
     golden = []
     for path in sorted(Path(golden_dir).glob("*.json")):
-        golden.extend(json.loads(path.read_text()))
+        golden.extend(g for g in json.loads(path.read_text())
+                      if g.get("labeled_by") == "operator")
     return golden
 
 
 def calibrate(golden, cases_by_id, client, rubric=None):
+    if not golden:
+        return 0.0   # no certified items -> judge is untrusted by definition
     rubric = rubric or parse_rubric()
     agreed = 0
     for g in golden:
         case = cases_by_id[g["case_id"]]
-        got = judge_check(rubric, g["check"], case, g["response_excerpt"], client)
+        got = judge_check(rubric, g["check"], case, g["response"], client)
         agreed += got == (g["label"] == "pass")
     return agreed / len(golden)
