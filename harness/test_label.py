@@ -100,11 +100,42 @@ def test_label_loop_s_skips_and_q_quits(tmp_path):
     assert golden == []
 
 
-def test_label_loop_shows_prompt_and_response(tmp_path):
-    _, _, shown = run_loop(tmp_path, [cand("the full text")], ["y"])
+def test_label_loop_shows_expected_and_received_evidence(tmp_path):
+    response = "Some intro.\n**Operating from: Bottom-Right (Build + Quality)**\nMore text." * 3
+    _, _, shown = run_loop(tmp_path, [cand(response)], ["y"])
     joined = "\n".join(shown)
     assert "my prompt" in joined
-    assert "the full text" in joined
+    assert "EXPECTED" in joined and "upper-left" in joined
+    assert "RECEIVED" in joined and "Operating from: Bottom-Right" in joined
+    assert "CRITERION" in joined
+
+
+def test_label_loop_reports_missing_evidence(tmp_path):
+    _, _, shown = run_loop(tmp_path, [cand("no position anywhere here")], ["y"])
+    assert any("no matching evidence" in s for s in shown)
+
+
+def test_label_loop_v_shows_full_response_then_asks_again(tmp_path):
+    added, golden, shown = run_loop(tmp_path, [cand("SECRET FULL BODY text")], ["v", "y"])
+    assert added == 1
+    assert any("SECRET FULL BODY" in s for s in shown)
+
+
+def test_label_loop_saves_after_every_decision(tmp_path):
+    golden_path = tmp_path / "golden.json"
+    golden_path.write_text("[]")
+    answers = iter(["y"])
+    def ask(_prompt):
+        try:
+            return next(answers)
+        except StopIteration:
+            raise KeyboardInterrupt   # simulates Ctrl-C mid-session
+    import pytest as _pytest
+    with _pytest.raises(KeyboardInterrupt):
+        label_loop([cand("r1"), cand("r2")], golden_path, CASES,
+                   ask=ask, out=lambda _: None)
+    saved = json.loads(golden_path.read_text())
+    assert len(saved) == 1   # the decision before the crash survived
 
 
 def test_label_loop_assigns_unique_sequential_ids(tmp_path):

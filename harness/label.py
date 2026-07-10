@@ -13,9 +13,11 @@ sort first, because they are the most informative to label.
 """
 import argparse
 import json
+import re
 from pathlib import Path
 
 from checks import CHECKS
+from judge import parse_rubric
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -25,6 +27,36 @@ SIBLINGS = {
     "assumptions-specific": "assumptions-present",
     "trivial-reason": "trivial-marker",
 }
+
+# per-check evidence extractors: pull only the part of the response the
+# criterion actually judges, so the operator sees EXPECTED vs RECEIVED
+# instead of hunting through the full text (v shows it on demand)
+_EVIDENCE = {
+    "position-correct": re.compile(
+        r"^.*(operating from|position on the (matrix|continuum)).*$", re.I | re.M),
+    "assumptions-specific": re.compile(
+        r"<assumptions>.*?</assumptions>|^#{1,6}\s[^\n]*assumption[^\n]*\n(?:[-*][^\n]*\n?)*",
+        re.I | re.S | re.M),
+    "trivial-reason": re.compile(
+        r"^.*trivial\s*[—–-]\s*matrix not applied.*(?:\n(?!\n).*)*", re.I | re.M),
+    "verify-sections-present": re.compile(
+        r"^#{1,6}\s[^\n]*(confident about|double.check)[^\n]*\n(?:[-*][^\n]*\n?)*",
+        re.I | re.M),
+}
+
+
+def evidence(check, response):
+    pattern = _EVIDENCE.get(check)
+    if pattern is None:
+        return response   # no extractor: the whole response is the evidence
+    m = pattern.search(response)
+    return m.group(0).strip() if m else "(no matching evidence found in the response)"
+
+
+def expectation(check, case):
+    if check == "position-correct":
+        return f"a stated position matching quadrant: {case.get('quadrant', '?')}"
+    return f"quadrant {case.get('quadrant', '?')}; see criterion above"
 
 
 def latest_run(results_dir):
@@ -68,6 +100,7 @@ def _next_id(golden):
 
 def label_loop(cands, golden_path, cases_by_id, ask=input, out=print):
     golden = json.loads(golden_path.read_text()) if golden_path.exists() else []
+    rubric = parse_rubric()
     counter = _next_id(golden)
     added = 0
     for k, c in enumerate(cands):
@@ -75,8 +108,16 @@ def label_loop(cands, golden_path, cases_by_id, ask=input, out=print):
             f" · judge says: {c['proposed_label']}"
             + ("  (disagrees with deterministic sibling)" if c.get("disagreement") else ""))
         out("PROMPT: " + " // ".join(cases_by_id[c["case_id"]]["turns"]))
-        out("RESPONSE:\n" + c["response"])
-        answer = ask("[y]=judge is right  [n]=judge is wrong  [s]=skip  [q]=quit > ").strip().lower()
+        out("CRITERION: " + rubric["criteria"].get(c["check"], "(unknown check)"))
+        out("EXPECTED: " + expectation(c["check"], cases_by_id[c["case_id"]]))
+        out("RECEIVED: " + evidence(c["check"], c["response"]))
+        while True:
+            answer = ask("[y]=judge is right  [n]=judge is wrong  [s]=skip  "
+                         "[v]=view full response  [q]=quit > ").strip().lower()
+            if answer == "v":
+                out("FULL RESPONSE:\n" + c["response"])
+                continue
+            break
         if answer == "q":
             break
         if answer not in ("y", "n"):
@@ -95,6 +136,8 @@ def label_loop(cands, golden_path, cases_by_id, ask=input, out=print):
             "labeled_by": "operator",
         })
         added += 1
+        # save immediately: a Ctrl-C or crash never loses a decision
+        golden_path.write_text(json.dumps(golden, indent=2, ensure_ascii=False) + "\n")
     golden_path.write_text(json.dumps(golden, indent=2, ensure_ascii=False) + "\n")
     return added
 
