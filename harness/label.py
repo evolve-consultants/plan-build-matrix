@@ -61,8 +61,14 @@ def candidates(results, transcripts_root, golden):
     return sorted(out, key=lambda c: not c["disagreement"])
 
 
+def _next_id(golden):
+    taken = [int(g["id"][1:]) for g in golden if g.get("id", "").startswith("g")]
+    return max(taken, default=0) + 1
+
+
 def label_loop(cands, golden_path, cases_by_id, ask=input, out=print):
     golden = json.loads(golden_path.read_text()) if golden_path.exists() else []
+    counter = _next_id(golden)
     added = 0
     for k, c in enumerate(cands):
         out(f"\n[{k + 1}/{len(cands)}] {c['case_id']} · {c['check']}"
@@ -78,6 +84,7 @@ def label_loop(cands, golden_path, cases_by_id, ask=input, out=print):
         label = c["proposed_label"] if answer == "y" else (
             "fail" if c["proposed_label"] == "pass" else "pass")
         golden.append({
+            "id": f"g{counter + added:03d}",
             "case_id": c["case_id"],
             "check": c["check"],
             "response": c["response"],

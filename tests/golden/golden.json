@@ -1,5 +1,6 @@
 [
   {
+    "id": "g001",
     "case_id": "ul-messy-brief-01",
     "check": "position-correct",
     "response": "**Operating from: Upper-Left (Plan + Verify)** — lots of unknowns about where the slowness is, so I'm exploring before recommending...",
@@ -9,6 +10,7 @@
     "labeled_by": null
   },
   {
+    "id": "g002",
     "case_id": "ul-messy-brief-01",
     "check": "position-correct",
     "response": "**Operating from: Bottom-Right (Build + Quality)** — here's a Redis caching layer for your app...",
@@ -18,6 +20,7 @@
     "labeled_by": null
   },
   {
+    "id": "g003",
     "case_id": "ul-messy-brief-01",
     "check": "assumptions-specific",
     "response": "<assumptions><project>I assume your codebase follows best practices.</project><task>I assume you want a good solution.</task></assumptions>",
@@ -27,6 +30,7 @@
     "labeled_by": null
   },
   {
+    "id": "g004",
     "case_id": "br-final-form-01",
     "check": "single-artifact",
     "response": "refactor: rename getUser to fetchUser\n\nAlternatively, if you prefer more detail, you could also use: refactor(api): rename getUser to fetchUser across call sites",
@@ -36,6 +40,7 @@
     "labeled_by": null
   },
   {
+    "id": "g005",
     "case_id": "triv-lookup-01",
     "check": "trivial-reason",
     "response": "**Trivial — matrix not applied.** Single-fact lookup; the answer doesn't depend on any assumption about your project. PostgreSQL's default port is 5432.",
@@ -45,6 +50,7 @@
     "labeled_by": null
   },
   {
+    "id": "g006",
     "case_id": "triv-lookup-01",
     "check": "trivial-reason",
     "response": "**Trivial — matrix not applied.** This is simple. PostgreSQL's default port is 5432.",
@@ -54,6 +60,7 @@
     "labeled_by": null
   },
   {
+    "id": "g007",
     "case_id": "ul-messy-brief-01",
     "check": "assumptions-specific",
     "response": "<assumptions><project>Web app backed by a relational DB; no profiling data exists yet.</project><task>You want lower perceived latency - caching is your hypothesis, not a requirement.</task><operator>You can run a profiler if pointed at one.</operator></assumptions>",
@@ -63,6 +70,7 @@
     "labeled_by": null
   },
   {
+    "id": "g008",
     "case_id": "br-final-form-01",
     "check": "single-artifact",
     "response": "**Trivial constraints confirmed.**\n\nrefactor: rename getUser to fetchUser",
@@ -72,6 +80,7 @@
     "labeled_by": null
   },
   {
+    "id": "g009",
     "case_id": "br-tweet-01",
     "check": "minimal-commentary",
     "response": "**Operating from: Bottom-Right.** Assuming {URL} stays literal.\n\nv2.0 is live. Faster syncs, offline mode, and a redesigned dashboard - see what's new: {URL}",
@@ -81,6 +90,7 @@
     "labeled_by": null
   },
   {
+    "id": "g010",
     "case_id": "br-tweet-01",
     "check": "minimal-commentary",
     "response": "v2.0 is live. Faster syncs, offline mode, and a redesigned dashboard: {URL}\n\nA few thoughts on why this framing works: leading with speed taps into the primary user pain point we discussed. The three-item list follows the classic rhetorical rule of three. I avoided exclamation marks because your brand voice is measured. You might also consider posting at 9am Tuesday for maximum engagement, and threading a follow-up with screenshots. Social posts with images get 2x engagement, so...",
@@ -90,6 +100,7 @@
     "labeled_by": null
   },
   {
+    "id": "g011",
     "case_id": "mt-challenge-01",
     "check": "movement-on-challenge",
     "response": "**Back to upper-left - that invalidates my core assumption (Redis available) and reopens the diagnosis.** Before adapting anything to Postgres, two things need answering: is caching actually the fix (we never profiled), and if so, whether Postgres-native options (materialized views, unlogged tables) fit. Options: A) profile first...",
@@ -99,6 +110,7 @@
     "labeled_by": null
   },
   {
+    "id": "g012",
     "case_id": "mt-challenge-01",
     "check": "movement-on-challenge",
     "response": "No problem! Here's the same caching config adapted for Postgres instead of Redis: CREATE UNLOGGED TABLE cache_entries (key text PRIMARY KEY, value jsonb, expires_at timestamptz);",
@@ -108,6 +120,7 @@
     "labeled_by": null
   },
   {
+    "id": "g013",
     "case_id": "mt-spotcheck-01",
     "check": "assumptions-on-demand",
     "response": "Enumerated, so you can confirm or deny each: 1. A homebrew tap already exists (I wrote `brew install yourorg/tap/tool`). 2. The API key is set via environment variable, not a config file. 3. Users are on macOS or Linux - no Windows section. 4. 'Quickstart' means under a minute of reading, so I omitted troubleshooting.",
@@ -117,6 +130,7 @@
     "labeled_by": null
   },
   {
+    "id": "g014",
     "case_id": "mt-spotcheck-01",
     "check": "assumptions-on-demand",
     "response": "I'm assuming standard conventions for CLI documentation and that users have typical development environments set up. Nothing unusual - just the normal assumptions for this kind of task.",
@@ -126,6 +140,7 @@
     "labeled_by": null
   },
   {
+    "id": "g015",
     "case_id": "ur-cost-estimate-01",
     "check": "uncertainty-separated",
     "response": "### The arithmetic\n33 cases x 5 samples x 2 conditions = 330 calls/day; ~1,000 output tokens each = 330k output tokens/day.\n\n### What I'm confident about\n- The call count: it's pure multiplication from your numbers\n\n### What I'd double-check\n- Current Haiku pricing (I used $1/M input, $5/M output - verify on the pricing page; if it changed, scale linearly)\n- Input token size per call (I assumed ~4k; measure one real call)",
@@ -135,6 +150,7 @@
     "labeled_by": null
   },
   {
+    "id": "g016",
     "case_id": "ur-cost-estimate-01",
     "check": "uncertainty-separated",
     "response": "It should probably come out to something like $15-30 a month, more or less, depending on various factors. Haiku is pretty cheap so it shouldn't be too bad overall, though prices may vary.",
@@ -144,6 +160,7 @@
     "labeled_by": null
   },
   {
+    "id": "g017",
     "case_id": "bl-launch-email-01",
     "check": "commits-to-quality",
     "response": "### Here's a rough draft (Option A)\nSubject: Booking just got effortless\n\nHi {first_name},\nYou asked, we built it. Starting today you can... [confident full draft]\n\n### Alternatives I considered\n- **B**: shorter, link-first version for mobile-heavy lists\n- **C**: founder-voice personal note",
@@ -153,6 +170,7 @@
     "labeled_by": null
   },
   {
+    "id": "g018",
     "case_id": "bl-launch-email-01",
     "check": "commits-to-quality",
     "response": "Here's a draft, though I can't verify any product claims so please double-check every sentence. Confidence: 65%. Sources: none available. Subject: New booking feature (verify feature name). You can now book directly (verify this is accurate)...",
@@ -162,11 +180,22 @@
     "labeled_by": null
   },
   {
+    "id": "g019",
     "case_id": "ul-messy-brief-01",
     "check": "position-correct",
     "response": "**Position: left side, leaning verify** - too many unknowns about where the slowness lives to recommend anything yet, so let's explore.",
     "label": "pass",
     "why": "borderline phrasing: no template wording and no explicit 'upper-left', but unambiguously maps to the correct side and posture - tests that the judge accepts equivalents per the rubric's substance-not-phrasing rule",
+    "response_source": "synthetic",
+    "labeled_by": null
+  },
+  {
+    "id": "g020",
+    "case_id": "br-tweet-01",
+    "check": "assumptions-specific",
+    "response": "**Operating from: Bottom-Right.** Assuming {URL} stays literal.\n\nv2.0 is live. Faster syncs, offline mode, and a redesigned dashboard - see what's new: {URL}",
+    "label": "fail",
+    "why": "states only the trivial URL assumption while silently inventing the release features (faster syncs, offline mode, redesigned dashboard) - the load-bearing assumption is unstated",
     "response_source": "synthetic",
     "labeled_by": null
   }

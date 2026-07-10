@@ -105,3 +105,15 @@ def test_label_loop_shows_prompt_and_response(tmp_path):
     joined = "\n".join(shown)
     assert "my prompt" in joined
     assert "the full text" in joined
+
+
+def test_label_loop_assigns_unique_sequential_ids(tmp_path):
+    golden_path = tmp_path / "golden.json"
+    golden_path.write_text(json.dumps([{"id": "g007", "case_id": "x", "check": "c",
+                                        "response": "r", "label": "pass"}]))
+    label_loop([cand("r1"), cand("r2")], golden_path, CASES,
+               ask=lambda _: "y", out=lambda _: None)
+    golden = json.loads(golden_path.read_text())
+    ids = [g["id"] for g in golden]
+    assert ids == ["g007", "g008", "g009"]
+    assert len(set(ids)) == len(ids)

@@ -102,3 +102,11 @@ def test_calibrate_agreement_fraction():
 
 def test_calibrate_with_no_labeled_items_is_zero():
     assert calibrate([], {}, FakeAPI([])) == 0.0
+
+
+def test_real_golden_file_has_unique_ids():
+    import json
+    items = json.loads((REPO_ROOT / "tests" / "golden" / "golden.json").read_text())
+    ids = [g["id"] for g in items]
+    assert all(ids), "every golden item needs an id"
+    assert len(set(ids)) == len(ids), "golden ids must be unique"
