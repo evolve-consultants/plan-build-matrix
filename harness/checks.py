@@ -9,7 +9,7 @@ import re
 _POSITION = re.compile(r"operating from|position on the (matrix|continuum)", re.I)
 _ASSUMPTION_TAGS = re.compile(r"<assumptions>.*</assumptions>", re.I | re.S)
 _ASSUMPTION_HEADING = re.compile(r"^#{1,6}\s[^\n]*assumption", re.I | re.M)
-_OPTION_TABLE_ROW = re.compile(r"^\|\s*\*\*[A-Z]\*\*", re.M)
+_OPTION_TABLE_ROW = re.compile(r"^\|\s*\*\*[A-Z](\*\*|[:.])", re.M)
 _OPTION_BULLET = re.compile(r"^[-*]\s+\*\*[A-Z]\*\*\s*[:.]", re.M)
 _RECOMMEND = re.compile(r"^#{1,6}\s[^\n]*recommend|\*\*[^*\n]*recommend[^*\n]*\*\*", re.I | re.M)
 _NEXT_PROMPT = re.compile(r"next prompt", re.I)
@@ -39,8 +39,15 @@ def _recommendation(text):
 
 
 def _next_prompt(text):
+    # accepts either an explicit blockquoted prompt or the template's
+    # "Next prompt should include" bulleted form, within the same section
     m = _NEXT_PROMPT.search(text)
-    return bool(m and _BLOCKQUOTE.search(text[m.end():]))
+    if not m:
+        return False
+    rest = text[m.end():]
+    heading = re.search(r"^#{1,6}\s", rest, re.M)
+    section = rest[:heading.start()] if heading else rest
+    return bool(re.search(r"^\s*(>|[-*]\s)", section, re.M))
 
 
 def _verify_sections(text):

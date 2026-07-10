@@ -141,6 +141,28 @@ def test_3a_fails_on_plain_prose():
     assert run_check("options-listed", PLAIN) is False
 
 
+REAL_TRANSCRIPT_EXCERPT = """\
+### Options
+
+| | Upside | Downside | Best when |
+|---|---|---|---|
+| **A: Start with browser/app profiling** | Identifies where *your* code is spending time. | Requires a profiling session. | Web frontend, or reproducible locally. |
+| **B: Add logging/instrumentation first** | Catches real production slowness. | Slower to iterate. | Slowness is intermittent. |
+
+### Recommendation
+**Start with Option A** — profile what you can reproduce locally.
+
+### Next prompt should include
+- **App type** (web frontend, backend, mobile?)
+- **How to trigger the slowness** (specific user action?)
+"""
+
+
+def test_options_listed_accepts_labeled_table_rows():
+    # real Haiku output writes "| **A: label** |", not bare "| **A** |"
+    assert run_check("options-listed", REAL_TRANSCRIPT_EXCERPT) is True
+
+
 # --- 3b: recommendation present --------------------------------------------
 
 def test_3b_passes_on_recommendation_heading():
@@ -159,9 +181,23 @@ def test_3b_fails_when_absent():
 def test_3c_passes_on_next_prompt_with_blockquote():
     assert run_check("next-prompt-given", UPPER_LEFT) is True
 
-def test_3c_fails_on_next_prompt_heading_without_prompt():
+def test_3c_accepts_template_bulleted_form():
+    # the UL template itself ends with "Next prompt should include" + bullets;
+    # the checker must accept what the template prescribes
     text = "### Next prompt should include\n- Which option you prefer\n"
-    # section exists but contains no quoted/blockquoted prompt text
+    assert run_check("next-prompt-given", text) is True
+
+
+def test_3c_accepts_real_transcript_form():
+    assert run_check("next-prompt-given", REAL_TRANSCRIPT_EXCERPT) is True
+
+
+def test_3c_fails_on_bare_mention_with_no_content():
+    assert run_check("next-prompt-given", "I'll wait for your next prompt.") is False
+
+
+def test_3c_fails_when_bullets_belong_to_a_later_section():
+    text = "Your next prompt matters.\n\n### Unrelated section\n- a bullet\n"
     assert run_check("next-prompt-given", text) is False
 
 def test_3c_fails_when_absent():
