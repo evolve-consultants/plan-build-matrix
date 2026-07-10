@@ -75,7 +75,7 @@ def test_candidates_skip_items_already_in_golden(tmp_path):
     golden = [{"case_id": "c1", "check": "position-correct",
                "response": "full response zero", "label": "pass"}]
     cands = candidates(results, troot, golden=golden)
-    assert [c["response"] for c in cands] == ["full response one"]
+    assert {c["response"] for c in cands} == {"full response one", "bare baseline answer"}
 
 
 def test_candidates_put_disagreements_first(tmp_path):
