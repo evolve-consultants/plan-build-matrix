@@ -110,8 +110,14 @@ def run_sample_api(case, system, model, client, sleep=time.sleep):
     return text
 
 
-def grade_sample(case, response):
-    return {c: run_check(c, response) for c in case["checks"] if c in CHECKS}
+def grade_sample(case, response, judge=None):
+    verdicts = {}
+    for c in case["checks"]:
+        if c in CHECKS:
+            verdicts[c] = run_check(c, response)
+        elif judge is not None:
+            verdicts[c] = judge(c, case, response)
+    return verdicts
 
 
 def pass_fractions(samples):
@@ -120,7 +126,7 @@ def pass_fractions(samples):
 
 
 def run_suite(cases, n, model, repo_root, sandbox, run=subprocess.run,
-              runtime="cli", client=None):
+              runtime="cli", client=None, judge=None):
     config_dir = Path(sandbox) / "claude-config"
     config_dir.mkdir(parents=True, exist_ok=True)
     env = isolated_env(config_dir)
@@ -139,7 +145,7 @@ def run_suite(cases, n, model, repo_root, sandbox, run=subprocess.run,
                     workdir = make_workdir(arm, repo_root, sandbox)
                     response = run_sample(case, workdir, env, model, run=run)
                 responses.append(response)
-                verdicts.append(grade_sample(case, response))
+                verdicts.append(grade_sample(case, response, judge=judge))
             fractions = pass_fractions(verdicts)
             arms[arm][case["id"]] = {
                 "checks": fractions,
@@ -183,6 +189,9 @@ def main():
     ap = argparse.ArgumentParser(description="Run the instruction eval suite.")
     ap.add_argument("--n", type=int, default=5, help="samples per case per arm")
     ap.add_argument("--model", default="haiku")
+    ap.add_argument("--judge", action="store_true",
+                    help="enable LLM-judge checks (calibrates against "
+                         "tests/golden/ first; aborts below 90% agreement)")
     ap.add_argument("--runtime", choices=["api", "cli"], default="api",
                     help="api: raw messages API, instructions as system prompt "
                          "(canonical, reproducible); cli: claude -p inside the "
@@ -197,14 +206,28 @@ def main():
     sandbox = args.sandbox or tempfile.mkdtemp(prefix="pbm-eval-")
 
     client = None
-    if args.runtime == "api":
+    if args.runtime == "api" or args.judge:
         import anthropic
         client = anthropic.Anthropic()
 
     cases = load_cases(args.cases)
+
+    judge_fn, calibration = None, None
+    if args.judge:
+        from judge import calibrate, load_golden, make_judge
+        golden = load_golden(repo_root / "tests" / "golden")
+        cases_by_id = {c["id"]: c for c in cases}
+        calibration = calibrate(golden, cases_by_id, client)
+        print(f"judge calibration: {calibration:.0%} ({len(golden)} golden items)")
+        if calibration < 0.90:
+            raise SystemExit("judge below 90% agreement with golden set - "
+                             "run aborted as untrustworthy")
+        judge_fn = make_judge(client)
+
     results = run_suite(cases, n=args.n, model=args.model,
                         repo_root=repo_root, sandbox=sandbox,
-                        runtime=args.runtime, client=client)
+                        runtime=args.runtime, client=client, judge=judge_fn)
+    results["judge_calibration"] = calibration
     results["instructions_sha"] = _git_sha(repo_root)
     results["timestamp"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 

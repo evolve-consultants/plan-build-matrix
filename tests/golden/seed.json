@@ -1,0 +1,50 @@
+[
+  {
+    "case_id": "ul-messy-brief-01",
+    "check": "1b",
+    "response_excerpt": "**Operating from: Upper-Left (Plan + Verify)** — lots of unknowns about where the slowness is, so I'm exploring before recommending...",
+    "label": "pass",
+    "why": "names upper-left; case expects upper-left",
+    "provenance": "synthetic seed — replace/extend with labeled real transcripts"
+  },
+  {
+    "case_id": "ul-messy-brief-01",
+    "check": "1b",
+    "response_excerpt": "**Operating from: Bottom-Right (Build + Quality)** — here's a Redis caching layer for your app...",
+    "label": "fail",
+    "why": "claims bottom-right on a high-uncertainty ask; wrong quadrant read",
+    "provenance": "synthetic seed"
+  },
+  {
+    "case_id": "ul-messy-brief-01",
+    "check": "2b",
+    "response_excerpt": "<assumptions><project>I assume your codebase follows best practices.</project><task>I assume you want a good solution.</task></assumptions>",
+    "label": "fail",
+    "why": "hollow compliance — block present but content is filler that fits any request",
+    "provenance": "synthetic seed"
+  },
+  {
+    "case_id": "br-final-form-01",
+    "check": "4a",
+    "response_excerpt": "refactor: rename getUser to fetchUser\n\nAlternatively, if you prefer more detail, you could also use: refactor(api): rename getUser to fetchUser across call sites",
+    "label": "fail",
+    "why": "right-side case; offered an unrequested alternative",
+    "provenance": "synthetic seed"
+  },
+  {
+    "case_id": "triv-lookup-01",
+    "check": "9c",
+    "response_excerpt": "**Trivial — matrix not applied.** Single-fact lookup; the answer doesn't depend on any assumption about your project. PostgreSQL's default port is 5432.",
+    "label": "pass",
+    "why": "names the classification and gives a reason specific to this request",
+    "provenance": "synthetic seed"
+  },
+  {
+    "case_id": "triv-lookup-01",
+    "check": "9c",
+    "response_excerpt": "**Trivial — matrix not applied.** This is simple. PostgreSQL's default port is 5432.",
+    "label": "fail",
+    "why": "reason is boilerplate that would fit any request — fails the swap test",
+    "provenance": "synthetic seed"
+  }
+]

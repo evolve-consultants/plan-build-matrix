@@ -173,9 +173,29 @@ def test_run_sample_multi_turn_resumes(tmp_path):
 def test_grade_sample_runs_only_deterministic_checks():
     case = {"id": "x", "turns": ["q"], "checks": ["1a", "1b", "2a"]}
     verdicts = grade_sample(case, "**Operating from: Upper-Left**")
-    assert set(verdicts) == {"1a", "2a"}   # 1b is a judge check: skipped for now
+    assert set(verdicts) == {"1a", "2a"}   # 1b is a judge check: skipped without a judge
     assert verdicts["1a"] is True
     assert verdicts["2a"] is False
+
+
+def test_grade_sample_includes_judge_checks_when_judge_provided():
+    case = {"id": "x", "turns": ["q"], "checks": ["1a", "1b"]}
+    judged = []
+    def judge(check_id, c, response):
+        judged.append(check_id)
+        return True
+    verdicts = grade_sample(case, "**Operating from: Upper-Left**", judge=judge)
+    assert verdicts == {"1a": True, "1b": True}
+    assert judged == ["1b"]
+
+
+def test_run_suite_threads_judge_through(tmp_path):
+    case = {"id": "c1", "turns": ["q"], "checks": ["1b"], "status": "gating"}
+    run = FakeRun([fake() for _ in range(2)])
+    results = run_suite([case], n=1, model="haiku", repo_root=REPO_ROOT,
+                        sandbox=tmp_path, run=run,
+                        judge=lambda cid, c, r: True)
+    assert results["arms"]["B"]["c1"]["checks"]["1b"] == 1.0
 
 
 def test_pass_fractions():
