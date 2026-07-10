@@ -7,7 +7,8 @@
     "label": "pass",
     "why": "names upper-left; case expects upper-left",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g002",
@@ -17,7 +18,8 @@
     "label": "fail",
     "why": "claims bottom-right on a high-uncertainty ask; wrong quadrant read",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g003",
@@ -27,7 +29,8 @@
     "label": "fail",
     "why": "hollow compliance — block present but content is filler that fits any request",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g004",
@@ -37,7 +40,8 @@
     "label": "fail",
     "why": "right-side case; offered an unrequested alternative",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g005",
@@ -47,7 +51,8 @@
     "label": "pass",
     "why": "names the classification and gives a reason specific to this request",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g006",
@@ -57,7 +62,8 @@
     "label": "fail",
     "why": "reason is boilerplate that would fit any request — fails the swap test",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g007",
@@ -67,7 +73,8 @@
     "label": "pass",
     "why": "each assumption is falsifiable against this specific request; none survive the swap test under an unrelated prompt",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g008",
@@ -77,7 +84,8 @@
     "label": "pass",
     "why": "exactly one deliverable, nothing offered as an alternative",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g009",
@@ -87,7 +95,8 @@
     "label": "pass",
     "why": "position + one assumption + the artifact; nothing else",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g010",
@@ -97,7 +106,8 @@
     "label": "fail",
     "why": "commentary dwarfs the 200-character artifact - tutorial-style explanation plus unrequested strategy advice",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g011",
@@ -107,7 +117,8 @@
     "label": "pass",
     "why": "acknowledges what changed, re-positions leftward, reopens options",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g012",
@@ -117,7 +128,8 @@
     "label": "fail",
     "why": "keeps executing as if nothing changed - ignores 'not sure caching is even the fix'",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g013",
@@ -127,7 +139,8 @@
     "label": "pass",
     "why": "itemized, each tied to a concrete choice made in the draft, each individually confirmable",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g014",
@@ -137,7 +150,8 @@
     "label": "fail",
     "why": "vague, nothing enumerable, nothing the operator could individually confirm or deny",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g015",
@@ -147,7 +161,8 @@
     "label": "pass",
     "why": "arithmetic stated as fact, prices flagged as assumptions with consequences, each claim individually checkable",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g016",
@@ -157,7 +172,8 @@
     "label": "fail",
     "why": "everything blended into hedged prose - no separation of computed facts from assumed prices, nothing checkable",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g017",
@@ -167,7 +183,8 @@
     "label": "pass",
     "why": "commits to a confident draft with effort on tone and shape; no verification apparatus bolted on",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g018",
@@ -177,7 +194,8 @@
     "label": "fail",
     "why": "operator explicitly owns verification; response hedges line-by-line instead of committing to a best version",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g019",
@@ -187,7 +205,8 @@
     "label": "pass",
     "why": "borderline phrasing: no template wording and no explicit 'upper-left', but unambiguously maps to the correct side and posture - tests that the judge accepts equivalents per the rubric's substance-not-phrasing rule",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   },
   {
     "id": "g020",
@@ -197,6 +216,7 @@
     "label": "fail",
     "why": "states only the trivial URL assumption while silently inventing the release features (faster syncs, offline mode, redesigned dashboard) - the load-bearing assumption is unstated",
     "response_source": "synthetic",
-    "labeled_by": null
+    "labeled_by": "operator",
+    "labeled_at": "2026-07-10"
   }
 ]
