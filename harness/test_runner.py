@@ -311,6 +311,15 @@ def test_run_suite_keeps_raw_samples(tmp_path):
     assert results["arms"]["B"]["c1"]["samples"] == ["resp-arm-b"]
 
 
+def test_run_suite_stores_per_sample_verdicts(tmp_path):
+    case = {"id": "c1", "turns": ["q"], "checks": ["position-stated"], "status": "gating"}
+    run = FakeRun([fake(result="**Operating from: Upper-Left**"), fake(result="plain")])
+    results = run_suite([case], n=1, model="haiku", repo_root=REPO_ROOT,
+                        sandbox=tmp_path, run=run)
+    assert results["arms"]["A"]["c1"]["sample_verdicts"] == [{"position-stated": True}]
+    assert results["arms"]["B"]["c1"]["sample_verdicts"] == [{"position-stated": False}]
+
+
 def test_write_transcripts_writes_files_and_rewrites_references(tmp_path):
     results = {"arms": {"A": {"c1": {"samples": ["hello world", "second try"],
                                      "checks": {"position-stated": 0.0}}}}}

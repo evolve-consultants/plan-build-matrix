@@ -152,6 +152,7 @@ def run_suite(cases, n, model, repo_root, sandbox, run=subprocess.run,
                 "score": sum(fractions.values()) / len(fractions) if fractions else None,
                 "status": case.get("status"),
                 "samples": responses,
+                "sample_verdicts": verdicts,
             }
     return {"arms": arms, "n": n, "model": model, "runtime": runtime}
 
