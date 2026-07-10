@@ -108,8 +108,8 @@ def label_loop(cands, golden_path, cases_by_id, ask=input, out=print):
     counter = _next_id(golden)
     added = 0
     for k, c in enumerate(cands):
-        arm_tag = {"A": "arm A (no instructions - baseline)",
-                   "B": "arm B (with instructions)"}.get(c.get("arm"), "")
+        arm_tag = {"A": "response WITHOUT instructions (baseline)",
+                   "B": "response WITH instructions"}.get(c.get("arm"), "")
         out(f"\n[{k + 1}/{len(cands)}] {c['case_id']} · {c['check']}"
             f" · {arm_tag}"
             f" · judge says: {c['proposed_label']}"
@@ -155,16 +155,19 @@ def main():
     ap.add_argument("--transcripts", default=REPO_ROOT / "transcripts")
     ap.add_argument("--cases", default=REPO_ROOT / "tests" / "cases")
     ap.add_argument("--golden", default=REPO_ROOT / "tests" / "golden" / "golden.json")
-    ap.add_argument("--arm", choices=["A", "B"], default=None,
-                    help="only label candidates from one arm (B = with instructions)")
+    ap.add_argument("--condition", choices=["with-instructions", "baseline"],
+                    default=None,
+                    help="only label responses from one condition "
+                         "(with-instructions, or baseline = no instructions)")
     args = ap.parse_args()
+    arm_filter = {"with-instructions": "B", "baseline": "A", None: None}[args.condition]
 
     from runner import load_cases
     cases_by_id = {c["id"]: c for c in load_cases(args.cases)}
     golden_path = Path(args.golden)
     golden = json.loads(golden_path.read_text()) if golden_path.exists() else []
 
-    cands = candidates(latest_run(args.results), args.transcripts, golden, arm=args.arm)
+    cands = candidates(latest_run(args.results), args.transcripts, golden, arm=arm_filter)
     if not cands:
         print("no unlabeled candidates in the latest run")
         return
