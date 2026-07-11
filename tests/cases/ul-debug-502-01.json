@@ -5,6 +5,14 @@
   "turns": [
     "Our production API intermittently returns 502s - maybe once an hour, no pattern we can see. Where do we even start?"
   ],
-  "checks": ["position-stated", "position-correct", "assumptions-present", "assumptions-specific", "options-listed", "recommendation-given", "next-prompt-given"],
-  "status": "xfail"
+  "checks": [
+    "position-stated",
+    "position-correct",
+    "assumptions-present",
+    "assumptions-specific",
+    "options-listed",
+    "recommendation-given",
+    "next-prompt-given"
+  ],
+  "status": "gating"
 }

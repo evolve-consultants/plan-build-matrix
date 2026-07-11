@@ -14,5 +14,5 @@
   "turns": [
     "Write a docker-compose.yml for a dev stack: Postgres 16 and Redis 7, standard ports, persistent volume for Postgres. Flag anything you assume."
   ],
-  "status": "xfail"
+  "status": "gating"
 }

@@ -14,5 +14,5 @@
   "turns": [
     "I'm thinking about turning my consultancy's internal tooling into a product. Where do I even start?"
   ],
-  "status": "xfail"
+  "status": "gating"
 }

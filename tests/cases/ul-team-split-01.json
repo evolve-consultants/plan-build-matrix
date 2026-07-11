@@ -14,5 +14,5 @@
   "turns": [
     "Half my team wants to move our REST API to GraphQL and half thinks it's a waste of time. What should we do?"
   ],
-  "status": "xfail"
+  "status": "gating"
 }

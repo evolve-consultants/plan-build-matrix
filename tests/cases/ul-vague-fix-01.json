@@ -14,5 +14,5 @@
   "turns": [
     "Users keep complaining our dashboard is confusing. Fix it."
   ],
-  "status": "xfail"
+  "status": "gating"
 }

@@ -16,5 +16,5 @@
   "turns": [
     "We need a tagline for an open-source project about assumption alignment between developers and AI assistants. Give me a first pass I can react to."
   ],
-  "status": "xfail"
+  "status": "gating"
 }

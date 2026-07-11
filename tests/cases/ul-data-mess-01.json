@@ -14,5 +14,5 @@
   "turns": [
     "We have customer data spread across four systems and none of them agree with each other. What should I do?"
   ],
-  "status": "xfail"
+  "status": "gating"
 }

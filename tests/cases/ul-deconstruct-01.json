@@ -13,5 +13,5 @@
   "turns": [
     "Deconstruct the topic of adding offline support to our web app into 5 key ideas I need to understand first, sorted from most foundational to most advanced."
   ],
-  "status": "xfail"
+  "status": "gating"
 }
