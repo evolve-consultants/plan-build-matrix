@@ -1,0 +1,1771 @@
+{
+  "arms": {
+    "A": {
+      "bl-blog-outline-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0,
+          "draft-before-alternatives": 0.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.1111111111111111,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": false,
+            "draft-before-alternatives": false,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-bl-blog-outline-01-0.md"
+        ]
+      },
+      "bl-code-draft-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0,
+          "draft-before-alternatives": 0.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.1111111111111111,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": false,
+            "draft-before-alternatives": false,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-bl-code-draft-01-0.md"
+        ]
+      },
+      "bl-launch-email-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0,
+          "draft-before-alternatives": 0.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.1111111111111111,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": false,
+            "draft-before-alternatives": false,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-bl-launch-email-01-0.md"
+        ]
+      },
+      "bl-onboarding-emails-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0,
+          "draft-before-alternatives": 0.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.2222222222222222,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": true,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": false,
+            "draft-before-alternatives": false,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-bl-onboarding-emails-01-0.md"
+        ]
+      },
+      "bl-readme-intro-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0,
+          "draft-before-alternatives": 0.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.1111111111111111,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": false,
+            "draft-before-alternatives": false,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-bl-readme-intro-01-0.md"
+        ]
+      },
+      "bl-tagline-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0,
+          "draft-before-alternatives": 0.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.1111111111111111,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": false,
+            "draft-before-alternatives": false,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-bl-tagline-01-0.md"
+        ]
+      },
+      "bl-talk-abstract-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0,
+          "draft-before-alternatives": 0.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.2222222222222222,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": true,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": false,
+            "draft-before-alternatives": false,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-bl-talk-abstract-01-0.md"
+        ]
+      },
+      "br-error-message-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 1.0,
+          "minimal-commentary": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.42857142857142855,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "single-artifact": true,
+            "minimal-commentary": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-br-error-message-01-0.md"
+        ]
+      },
+      "br-final-form-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "single-artifact": 1.0,
+          "minimal-commentary": 1.0
+        },
+        "score": 0.5,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "single-artifact": true,
+            "minimal-commentary": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-br-final-form-01-0.md"
+        ]
+      },
+      "br-gitignore-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 0.0,
+          "minimal-commentary": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.2857142857142857,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "single-artifact": false,
+            "minimal-commentary": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-br-gitignore-01-0.md"
+        ]
+      },
+      "br-haiku-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 1.0,
+          "minimal-commentary": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.42857142857142855,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "single-artifact": true,
+            "minimal-commentary": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-br-haiku-01-0.md"
+        ]
+      },
+      "br-json-headers-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 1.0,
+          "minimal-commentary": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.42857142857142855,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "single-artifact": true,
+            "minimal-commentary": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-br-json-headers-01-0.md"
+        ]
+      },
+      "br-sql-format-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 1.0,
+          "minimal-commentary": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.42857142857142855,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "single-artifact": true,
+            "minimal-commentary": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-br-sql-format-01-0.md"
+        ]
+      },
+      "br-tweet-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 0.0,
+          "minimal-commentary": 0.0,
+          "commits-to-quality": 0.0
+        },
+        "score": 0.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "single-artifact": false,
+            "minimal-commentary": false,
+            "commits-to-quality": false
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-br-tweet-01-0.md"
+        ]
+      },
+      "mt-challenge-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "movement-on-challenge": 1.0
+        },
+        "score": 0.25,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "movement-on-challenge": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-mt-challenge-01-0.md"
+        ]
+      },
+      "mt-spotcheck-01": {
+        "checks": {
+          "assumptions-on-demand": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "assumptions-on-demand": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-mt-spotcheck-01-0.md"
+        ]
+      },
+      "triv-git-log-01": {
+        "checks": {
+          "trivial-marker": 0.0,
+          "scaffold-absent": 1.0,
+          "trivial-reason": 0.0
+        },
+        "score": 0.3333333333333333,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "trivial-marker": false,
+            "scaffold-absent": true,
+            "trivial-reason": false
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-triv-git-log-01-0.md"
+        ]
+      },
+      "triv-http-418-01": {
+        "checks": {
+          "trivial-marker": 0.0,
+          "scaffold-absent": 1.0,
+          "trivial-reason": 0.0
+        },
+        "score": 0.3333333333333333,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "trivial-marker": false,
+            "scaffold-absent": true,
+            "trivial-reason": false
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-triv-http-418-01-0.md"
+        ]
+      },
+      "triv-lookup-01": {
+        "checks": {
+          "trivial-marker": 0.0,
+          "scaffold-absent": 1.0,
+          "trivial-reason": 0.0
+        },
+        "score": 0.3333333333333333,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "trivial-marker": false,
+            "scaffold-absent": true,
+            "trivial-reason": false
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-triv-lookup-01-0.md"
+        ]
+      },
+      "triv-units-01": {
+        "checks": {
+          "trivial-marker": 0.0,
+          "scaffold-absent": 1.0,
+          "trivial-reason": 0.0
+        },
+        "score": 0.3333333333333333,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "trivial-marker": false,
+            "scaffold-absent": true,
+            "trivial-reason": false
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-triv-units-01-0.md"
+        ]
+      },
+      "ul-data-mess-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0
+        },
+        "score": 0.14285714285714285,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": true,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": false
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-ul-data-mess-01-0.md"
+        ]
+      },
+      "ul-debug-502-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0
+        },
+        "score": 0.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": false
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-ul-debug-502-01-0.md"
+        ]
+      },
+      "ul-deconstruct-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0
+        },
+        "score": 0.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "recommendation-given": false,
+            "next-prompt-given": false
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-ul-deconstruct-01-0.md"
+        ]
+      },
+      "ul-messy-brief-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 1.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0
+        },
+        "score": 0.2857142857142857,
+        "status": "gating",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": true,
+            "assumptions-present": false,
+            "assumptions-specific": true,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": false
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-ul-messy-brief-01-0.md"
+        ]
+      },
+      "ul-product-pivot-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0
+        },
+        "score": 0.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": false
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-ul-product-pivot-01-0.md"
+        ]
+      },
+      "ul-team-split-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 1.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0
+        },
+        "score": 0.2857142857142857,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": true,
+            "assumptions-present": false,
+            "assumptions-specific": true,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": false
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-ul-team-split-01-0.md"
+        ]
+      },
+      "ul-vague-fix-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0
+        },
+        "score": 0.14285714285714285,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": true,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": false
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-ul-vague-fix-01-0.md"
+        ]
+      },
+      "ur-compose-stack-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "single-artifact": 1.0,
+          "verify-sections-present": 0.0,
+          "uncertainty-separated": 1.0
+        },
+        "score": 0.5714285714285714,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "single-artifact": true,
+            "verify-sections-present": false,
+            "uncertainty-separated": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-ur-compose-stack-01-0.md"
+        ]
+      },
+      "ur-cost-estimate-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 1.0,
+          "single-artifact": 1.0,
+          "verify-sections-present": 0.0,
+          "uncertainty-separated": 1.0
+        },
+        "score": 0.42857142857142855,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": true,
+            "single-artifact": true,
+            "verify-sections-present": false,
+            "uncertainty-separated": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-ur-cost-estimate-01-0.md"
+        ]
+      },
+      "ur-cron-backup-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "single-artifact": 1.0,
+          "verify-sections-present": 0.0,
+          "uncertainty-separated": 1.0
+        },
+        "score": 0.5714285714285714,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "single-artifact": true,
+            "verify-sections-present": false,
+            "uncertainty-separated": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-ur-cron-backup-01-0.md"
+        ]
+      },
+      "ur-date-validator-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 1.0,
+          "verify-sections-present": 0.0,
+          "uncertainty-separated": 1.0
+        },
+        "score": 0.2857142857142857,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "single-artifact": true,
+            "verify-sections-present": false,
+            "uncertainty-separated": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-ur-date-validator-01-0.md"
+        ]
+      },
+      "ur-memory-claim-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 1.0,
+          "verify-sections-present": 0.0,
+          "uncertainty-separated": 1.0
+        },
+        "score": 0.2857142857142857,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "single-artifact": true,
+            "verify-sections-present": false,
+            "uncertainty-separated": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-ur-memory-claim-01-0.md"
+        ]
+      },
+      "ur-sql-migration-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 1.0,
+          "single-artifact": 1.0,
+          "verify-sections-present": 0.0,
+          "uncertainty-separated": 1.0
+        },
+        "score": 0.42857142857142855,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": true,
+            "single-artifact": true,
+            "verify-sections-present": false,
+            "uncertainty-separated": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/A-ur-sql-migration-01-0.md"
+        ]
+      }
+    },
+    "B": {
+      "bl-blog-outline-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 0.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 0.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 1.0,
+          "draft-before-alternatives": 0.0,
+          "commits-to-quality": 0.0
+        },
+        "score": 0.3333333333333333,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": false,
+            "assumptions-present": true,
+            "assumptions-specific": false,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": true,
+            "draft-before-alternatives": false,
+            "commits-to-quality": false
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-bl-blog-outline-01-0.md"
+        ]
+      },
+      "bl-code-draft-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 1.0,
+          "draft-before-alternatives": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.7777777777777778,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": true,
+            "draft-before-alternatives": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-bl-code-draft-01-0.md"
+        ]
+      },
+      "bl-launch-email-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 1.0,
+          "draft-before-alternatives": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.7777777777777778,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": true,
+            "draft-before-alternatives": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-bl-launch-email-01-0.md"
+        ]
+      },
+      "bl-onboarding-emails-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 1.0,
+          "draft-before-alternatives": 0.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.6666666666666666,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": true,
+            "draft-before-alternatives": false,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-bl-onboarding-emails-01-0.md"
+        ]
+      },
+      "bl-readme-intro-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 0.0,
+          "draft-before-alternatives": 0.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.5555555555555556,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": false,
+            "draft-before-alternatives": false,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-bl-readme-intro-01-0.md"
+        ]
+      },
+      "bl-tagline-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 1.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 1.0,
+          "draft-before-alternatives": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.8888888888888888,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "options-listed": true,
+            "recommendation-given": false,
+            "next-prompt-given": true,
+            "draft-before-alternatives": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-bl-tagline-01-0.md"
+        ]
+      },
+      "bl-talk-abstract-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 0.0,
+          "recommendation-given": 0.0,
+          "next-prompt-given": 1.0,
+          "draft-before-alternatives": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.7777777777777778,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "options-listed": false,
+            "recommendation-given": false,
+            "next-prompt-given": true,
+            "draft-before-alternatives": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-bl-talk-abstract-01-0.md"
+        ]
+      },
+      "br-error-message-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 1.0,
+          "minimal-commentary": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.42857142857142855,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "single-artifact": true,
+            "minimal-commentary": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-br-error-message-01-0.md"
+        ]
+      },
+      "br-final-form-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "single-artifact": 1.0,
+          "minimal-commentary": 1.0
+        },
+        "score": 0.5,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "single-artifact": true,
+            "minimal-commentary": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-br-final-form-01-0.md"
+        ]
+      },
+      "br-gitignore-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 1.0,
+          "minimal-commentary": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.42857142857142855,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "single-artifact": true,
+            "minimal-commentary": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-br-gitignore-01-0.md"
+        ]
+      },
+      "br-haiku-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 1.0,
+          "minimal-commentary": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.42857142857142855,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "single-artifact": true,
+            "minimal-commentary": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-br-haiku-01-0.md"
+        ]
+      },
+      "br-json-headers-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 1.0,
+          "minimal-commentary": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.42857142857142855,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "single-artifact": true,
+            "minimal-commentary": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-br-json-headers-01-0.md"
+        ]
+      },
+      "br-sql-format-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 1.0,
+          "minimal-commentary": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.42857142857142855,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "single-artifact": true,
+            "minimal-commentary": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-br-sql-format-01-0.md"
+        ]
+      },
+      "br-tweet-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 1.0,
+          "minimal-commentary": 1.0,
+          "commits-to-quality": 1.0
+        },
+        "score": 0.42857142857142855,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": false,
+            "single-artifact": true,
+            "minimal-commentary": true,
+            "commits-to-quality": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-br-tweet-01-0.md"
+        ]
+      },
+      "mt-challenge-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "movement-on-challenge": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "movement-on-challenge": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-mt-challenge-01-0.md"
+        ]
+      },
+      "mt-spotcheck-01": {
+        "checks": {
+          "assumptions-on-demand": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "assumptions-on-demand": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-mt-spotcheck-01-0.md"
+        ]
+      },
+      "triv-git-log-01": {
+        "checks": {
+          "trivial-marker": 1.0,
+          "scaffold-absent": 1.0,
+          "trivial-reason": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "trivial-marker": true,
+            "scaffold-absent": true,
+            "trivial-reason": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-triv-git-log-01-0.md"
+        ]
+      },
+      "triv-http-418-01": {
+        "checks": {
+          "trivial-marker": 1.0,
+          "scaffold-absent": 1.0,
+          "trivial-reason": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "trivial-marker": true,
+            "scaffold-absent": true,
+            "trivial-reason": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-triv-http-418-01-0.md"
+        ]
+      },
+      "triv-lookup-01": {
+        "checks": {
+          "trivial-marker": 1.0,
+          "scaffold-absent": 1.0,
+          "trivial-reason": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "trivial-marker": true,
+            "scaffold-absent": true,
+            "trivial-reason": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-triv-lookup-01-0.md"
+        ]
+      },
+      "triv-units-01": {
+        "checks": {
+          "trivial-marker": 1.0,
+          "scaffold-absent": 1.0,
+          "trivial-reason": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "trivial-marker": true,
+            "scaffold-absent": true,
+            "trivial-reason": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-triv-units-01-0.md"
+        ]
+      },
+      "ul-data-mess-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 1.0,
+          "recommendation-given": 1.0,
+          "next-prompt-given": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "options-listed": true,
+            "recommendation-given": true,
+            "next-prompt-given": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-ul-data-mess-01-0.md"
+        ]
+      },
+      "ul-debug-502-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 1.0,
+          "recommendation-given": 1.0,
+          "next-prompt-given": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "options-listed": true,
+            "recommendation-given": true,
+            "next-prompt-given": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-ul-debug-502-01-0.md"
+        ]
+      },
+      "ul-deconstruct-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "recommendation-given": 1.0,
+          "next-prompt-given": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "recommendation-given": true,
+            "next-prompt-given": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-ul-deconstruct-01-0.md"
+        ]
+      },
+      "ul-messy-brief-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 1.0,
+          "recommendation-given": 1.0,
+          "next-prompt-given": 1.0
+        },
+        "score": 1.0,
+        "status": "gating",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "options-listed": true,
+            "recommendation-given": true,
+            "next-prompt-given": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-ul-messy-brief-01-0.md"
+        ]
+      },
+      "ul-product-pivot-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 0.0,
+          "recommendation-given": 1.0,
+          "next-prompt-given": 1.0
+        },
+        "score": 0.8571428571428571,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "options-listed": false,
+            "recommendation-given": true,
+            "next-prompt-given": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-ul-product-pivot-01-0.md"
+        ]
+      },
+      "ul-team-split-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 1.0,
+          "recommendation-given": 1.0,
+          "next-prompt-given": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "options-listed": true,
+            "recommendation-given": true,
+            "next-prompt-given": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-ul-team-split-01-0.md"
+        ]
+      },
+      "ul-vague-fix-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "options-listed": 1.0,
+          "recommendation-given": 1.0,
+          "next-prompt-given": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "options-listed": true,
+            "recommendation-given": true,
+            "next-prompt-given": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-ul-vague-fix-01-0.md"
+        ]
+      },
+      "ur-compose-stack-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "single-artifact": 1.0,
+          "verify-sections-present": 1.0,
+          "uncertainty-separated": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "single-artifact": true,
+            "verify-sections-present": true,
+            "uncertainty-separated": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-ur-compose-stack-01-0.md"
+        ]
+      },
+      "ur-cost-estimate-01": {
+        "checks": {
+          "position-stated": 0.0,
+          "position-correct": 0.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 1.0,
+          "single-artifact": 1.0,
+          "verify-sections-present": 0.0,
+          "uncertainty-separated": 1.0
+        },
+        "score": 0.42857142857142855,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": false,
+            "position-correct": false,
+            "assumptions-present": false,
+            "assumptions-specific": true,
+            "single-artifact": true,
+            "verify-sections-present": false,
+            "uncertainty-separated": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-ur-cost-estimate-01-0.md"
+        ]
+      },
+      "ur-cron-backup-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "single-artifact": 1.0,
+          "verify-sections-present": 1.0,
+          "uncertainty-separated": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "single-artifact": true,
+            "verify-sections-present": true,
+            "uncertainty-separated": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-ur-cron-backup-01-0.md"
+        ]
+      },
+      "ur-date-validator-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 0.0,
+          "single-artifact": 1.0,
+          "verify-sections-present": 0.0,
+          "uncertainty-separated": 1.0
+        },
+        "score": 0.7142857142857143,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": false,
+            "single-artifact": true,
+            "verify-sections-present": false,
+            "uncertainty-separated": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-ur-date-validator-01-0.md"
+        ]
+      },
+      "ur-memory-claim-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 1.0,
+          "assumptions-specific": 1.0,
+          "single-artifact": 1.0,
+          "verify-sections-present": 1.0,
+          "uncertainty-separated": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": true,
+            "assumptions-specific": true,
+            "single-artifact": true,
+            "verify-sections-present": true,
+            "uncertainty-separated": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-ur-memory-claim-01-0.md"
+        ]
+      },
+      "ur-sql-migration-01": {
+        "checks": {
+          "position-stated": 1.0,
+          "position-correct": 1.0,
+          "assumptions-present": 0.0,
+          "assumptions-specific": 1.0,
+          "single-artifact": 1.0,
+          "verify-sections-present": 0.0,
+          "uncertainty-separated": 1.0
+        },
+        "score": 0.7142857142857143,
+        "status": "xfail",
+        "sample_verdicts": [
+          {
+            "position-stated": true,
+            "position-correct": true,
+            "assumptions-present": false,
+            "assumptions-specific": true,
+            "single-artifact": true,
+            "verify-sections-present": false,
+            "uncertainty-separated": true
+          }
+        ],
+        "transcripts": [
+          "20260710-230854-27e4ef2/B-ur-sql-migration-01-0.md"
+        ]
+      }
+    }
+  },
+  "n": 1,
+  "model": "haiku",
+  "runtime": "api",
+  "judge_calibration": 0.9743589743589743,
+  "instructions_sha": "27e4ef2",
+  "timestamp": "2026-07-10T22:21:11Z",
+  "summary": {
+    "suite": 1.0,
+    "dimensions": {
+      "assumptions": 1.0,
+      "plan-mode": 1.0,
+      "positioning": 1.0
+    },
+    "dimensions_all": {
+      "assumptions": 0.6981132075471698,
+      "build-mode": 1.0,
+      "movement": 1.0,
+      "plan-mode": 0.6341463414634146,
+      "positioning": 0.6964285714285714,
+      "quality-mode": 0.8,
+      "spot-check": 1.0,
+      "trivial": 1.0,
+      "verify-mode": 0.75
+    },
+    "lift": 0.4864117364117364
+  },
+  "gate": {
+    "ok": true,
+    "reasons": [],
+    "baseline": {
+      "suite": 0.6571428571428571,
+      "dimensions": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 0.3333333333333333,
+        "assumptions": 1.0,
+        "plan-mode": 0.3333333333333333,
+        "positioning": 1.0
+      }
+    }
+  }
+}

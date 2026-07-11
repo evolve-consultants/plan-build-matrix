@@ -1,0 +1,1 @@
+The default port for PostgreSQL is **5432**.

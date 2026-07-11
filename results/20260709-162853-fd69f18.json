@@ -1,0 +1,85 @@
+{
+  "arms": {
+    "A": {
+      "br-final-form-01": {
+        "checks": {
+          "1a": 0.0
+        },
+        "score": 0.0,
+        "status": "xfail"
+      },
+      "triv-lookup-01": {
+        "checks": {
+          "9a": 0.0,
+          "9b": 1.0
+        },
+        "score": 0.5,
+        "status": "xfail"
+      },
+      "ul-messy-brief-01": {
+        "checks": {
+          "1a": 0.0,
+          "2a": 0.0,
+          "3a": 0.0,
+          "3b": 0.0,
+          "3c": 0.0
+        },
+        "score": 0.0,
+        "status": "gating"
+      }
+    },
+    "B": {
+      "br-final-form-01": {
+        "checks": {
+          "1a": 0.0
+        },
+        "score": 0.0,
+        "status": "xfail"
+      },
+      "triv-lookup-01": {
+        "checks": {
+          "9a": 1.0,
+          "9b": 1.0
+        },
+        "score": 1.0,
+        "status": "xfail"
+      },
+      "ul-messy-brief-01": {
+        "checks": {
+          "1a": 1.0,
+          "2a": 1.0,
+          "3a": 0.0,
+          "3b": 1.0,
+          "3c": 0.0
+        },
+        "score": 0.6,
+        "status": "gating"
+      }
+    }
+  },
+  "n": 1,
+  "model": "haiku",
+  "runtime": "api",
+  "instructions_sha": "fd69f18",
+  "timestamp": "2026-07-09T15:28:53Z",
+  "summary": {
+    "suite": 0.6,
+    "dimensions": {
+      "1": 1.0,
+      "2": 1.0,
+      "3": 0.3333333333333333
+    },
+    "dimensions_all": {
+      "1": 0.5,
+      "2": 1.0,
+      "3": 0.3333333333333333,
+      "9": 1.0
+    },
+    "lift": 0.3666666666666667
+  },
+  "gate": {
+    "ok": true,
+    "reasons": [],
+    "baseline": null
+  }
+}

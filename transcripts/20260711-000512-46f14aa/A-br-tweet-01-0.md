@@ -1,0 +1,1 @@
+🚀 v2.0 is officially live! We've packed in major improvements based on your feedback—faster performance, a cleaner interface, and new features to make your workflow smoother. Check out everything that's new: {URL}

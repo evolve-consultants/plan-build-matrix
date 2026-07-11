@@ -1,0 +1,1 @@
+We're sorry, but we couldn't process your payment—please check your details and try again.
