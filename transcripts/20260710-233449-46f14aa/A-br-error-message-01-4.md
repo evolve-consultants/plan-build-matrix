@@ -1,0 +1,1 @@
+We're sorry, but we weren't able to process your payment—please check your card details and try again, or contact us if the problem continues.

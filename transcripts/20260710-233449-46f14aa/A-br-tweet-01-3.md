@@ -1,0 +1,1 @@
+🎉 v2.0 is live! We've completely redesigned the experience with faster performance, new features, and a cleaner interface. Check it out now: {URL}

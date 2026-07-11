@@ -1,0 +1,1 @@
+We're sorry, but your payment didn't go through—please try again or contact your bank if the problem continues.
